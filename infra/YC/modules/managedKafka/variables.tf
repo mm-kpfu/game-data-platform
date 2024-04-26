@@ -1,11 +1,6 @@
-variable "project_prefix_name" {
-  type = string
-}
-
 variable "subnets" {
   type = list(object({
-    id   = string
-    name = string
+    subnet_id   = string
     zone = string
   }))
 }
@@ -20,9 +15,9 @@ variable "env" {
 
 variable "kafka_topics" {
   type = list(object({
-    name               = string
-    partitions         = number
-    replication_factor = number
+    topic_name         = string
+    partitions         = optional(number)
+    replication_factor = optional(number)
   }))
 }
 
@@ -81,14 +76,18 @@ variable "kafka_log_segment_bytes" {
 
 variable "kafka_compression_type" {
   type    = string
-  #  If the servers from which the data comes are located in the same cloud (Yandex Cloud),
-  #  it would be best not to use compression, since the internal network is not charged and
-  #  the path producer -> broker -> consumer is short. Otherwise, computing costs will
-  #  increase as compression uses CPU as well and the delay will also increase.
-  default = "COMPRESSION_TYPE_UNCOMPRESSED"
+}
+
+variable "kafka_assign_public_ip" {
+  # if game servers located outside of vpc
+  default = false
 }
 
 variable "kafka_version" {
   type    = string
   default = "3.5"
+}
+
+variable "kafka_zones" {
+  type = list(string)
 }
