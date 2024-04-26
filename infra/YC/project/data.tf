@@ -1,21 +1,21 @@
 #=======================================================================================================================
 # For existing vpc
+
 #data terraform_remote_state "existing_state" {
 #  backend = "s3"
 #  config  = {
 #    endpoints = {
 #      s3 = "https://storage.yandexcloud.net"
 #    }
-#    bucket   = "<bucket_name>"
-#    region   = "ru-central1-a"
-#    key      = "<path_to_state_file_in_bucket>/<state_file_name>.tfstate"
+#    bucket = var.existing_state_conf.bucket
+#    region = var.existing_state_conf.region
+#    key    = var.existing_state_conf.key
 #
-#    skip_region_validation      = true
-#    skip_credentials_validation = true
+#    skip_region_validation      = true # Required for YC!
+#    skip_credentials_validation = true # Required for YC!
+#    skip_requesting_account_id  = true # Required for YC!
+#    access_key                  = var.access_key
+#    secret_key                  = var.secret_key
 #  }
 #}
 #=======================================================================================================================
-
-data "yandex_iam_service_account" "sa" {
-  service_account_id = var.service_account_id
-}
