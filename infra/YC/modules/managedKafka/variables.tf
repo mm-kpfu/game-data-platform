@@ -1,3 +1,7 @@
+variable "project_prefix_name" {
+  default = "gdp"
+}
+
 variable "subnets" {
   type = list(object({
     subnet_id   = string

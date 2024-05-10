@@ -1,0 +1,19 @@
+service:
+  type: NodePort
+  port: 8088
+  annotations: {}
+    # cloud.google.com/load-balancer-type: "Internal"
+  loadBalancerIP: null
+  nodePort:
+    # -- (int)
+    http: 31000
+
+configOverrides:
+  secret: |
+    SECRET_KEY = '12345'
+
+supersetNode:
+  command:
+    - "/bin/sh"
+    - "-c"
+    - "pip install clickhouse-connect; . {{ .Values.configMountPath }}/superset_bootstrap.sh; /usr/bin/run-server.sh"

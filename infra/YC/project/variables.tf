@@ -60,16 +60,31 @@ variable "security_groups_ids_list" {
 }
 
 variable "node_groups" {
-  type    = any
-  default = {
-    "common" : {
+  type = any
+  default = [
+    {
+      name = "flink-common"
       auto_scale = {
         min     = 2
         max     = 32
         initial = 2
+      },
+      node_labels = {
+        node_group = "flink"
       }
+    },
+
+    {
+      name = "superset"
+      node_locations = [
+          "ru-central1-a",
+      ],
+      node_labels = {
+        node_group = "superset"
+      },
+      node_taints = ["node_group=superset-only:NoSchedule"]
     }
-  }
+  ]
 }
 
 variable "enable_outgoing_traffic" {
@@ -109,9 +124,8 @@ variable "custom_ingress_rules" {
     ```
   EOF
   type        = any
-  default     = {}
+  default = {}
 }
-
 #=======================================================NETWORK=========================================================
 # It is possible to integrate into an existing network through an explicit value or both id and remote state.
 # Check data.tf. If remote state and this variable is not set, vpc will be created automatically
@@ -145,7 +159,6 @@ variable "locations" {
     }
   ]
 }
-
 
 #=========================================================KAFKA=========================================================
 variable "kafka_topics" {
@@ -233,5 +246,3 @@ variable "kafka_assign_public_ip" {
   # if game servers located outside of vpc
   default = false
 }
-
-#=========================================================FLINK=========================================================
