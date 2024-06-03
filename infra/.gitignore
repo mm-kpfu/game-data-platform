@@ -5,4 +5,4 @@
 .tfstate
 .env
 backend.conf
-*.tfvars
+project/terraform.tfvars
