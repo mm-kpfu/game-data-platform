@@ -1,5 +1,5 @@
 locals {
-  kms_name        = lookup(var.kms_key, "name", "${var.name_prefix}-${var.master_locations[0].zone}")
+  kms_name        = lookup(var.kms_key, "name", random_string.unique_id)
   kms_key_with_id = "${local.kms_name}-${random_string.unique_id.result}"
 }
 

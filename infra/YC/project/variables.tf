@@ -1,6 +1,3 @@
-# Main variables. For more detailed settings, go to the corresponding files
-
-
 #========================================================COMMON=========================================================
 variable "name_prefix" {
   description = "all resources will be created with this prefix"
@@ -25,15 +22,20 @@ variable "folder_id" {
   type = string
 }
 
-#==========================================================Flink===========================================================
-variable "use_existing_sa" {
-  description = "If not true, then new users will be created, else you need to specify and service_account_id"
-  type        = bool
-  default     = false
+# for using outputs from remote state
+variable "use_remote_state" {
+  default = false
+}
+variable "access_key" {
+  default = null
+}
+variable "secret_key" {
+  default = null
 }
 
-variable "enable_cilium_policy" {
-  description = "Flag for enabling or disabling Cilium CNI."
+#======================================================Kubernetes=======================================================
+variable "use_existing_sa" {
+  description = "If not true, then new users will be created, else you need to specify and service_account_id"
   type        = bool
   default     = false
 }
@@ -44,6 +46,17 @@ variable "master_service_account_id" {
 
 variable "node_service_account_id" {
   type = string
+}
+
+variable "master_location" {
+  description = "zone name or 'regional'"
+  default = "ru-central1-a"
+}
+
+variable "enable_cilium_policy" {
+  description = "Flag for enabling or disabling Cilium CNI."
+  type        = bool
+  default     = false
 }
 
 # Kubernetes Master node common parameters
@@ -65,9 +78,9 @@ variable "node_groups" {
     {
       name = "flink-common"
       auto_scale = {
-        min     = 2
+        min     = 1
         max     = 32
-        initial = 2
+        initial = 1
       },
       node_labels = {
         node_group = "flink"
@@ -77,7 +90,9 @@ variable "node_groups" {
     {
       name = "superset"
       node_locations = [
-          "ru-central1-a",
+        {
+          zone = "ru-central1-a",
+        }
       ],
       node_labels = {
         node_group = "superset"
@@ -99,7 +114,7 @@ variable "custom_ingress_rules" {
 
     Example:
     ```
-    custom_ingress_rules = {
+    {
       "rule1" = {
         protocol = "TCP"
         description = "rule-1"
@@ -154,9 +169,9 @@ variable "locations" {
     {
       zone = "ru-central1-a"
     },
-    {
-      zone = "ru-central1-b"
-    }
+#     {
+#       zone = "ru-central1-b"
+#     }
   ]
 }
 
@@ -199,7 +214,7 @@ variable "kafka_default_replication_factor" {
 
 variable "kafka_brokers_count" {
   type    = number
-  default = 1
+  default = 2
 }
 
 variable "kafka_host_preset_id" {
@@ -244,5 +259,48 @@ variable "kafka_version" {
 
 variable "kafka_assign_public_ip" {
   # if game servers located outside of vpc
+  default = false
+}
+
+variable "create_default_kafka_user" {
+  type = bool
+  default = true
+}
+#=====================================================Clickhouse========================================================
+variable "clickhouse_databases" {
+  type = list(object({
+    name = string
+  }))
+
+  default = [
+    {
+      name = "gdp"
+    }
+  ]
+}
+
+variable "clickhouse_config" {
+  type = any
+  default = null
+}
+
+variable "clickhouse_users" {
+  type = list(any)
+}
+
+variable "clickhouse_hosts" {
+  type = list(any)
+}
+
+variable "clickhouse_disk_type_id" {}
+variable "clickhouse_disk_size" {}
+variable "clickhouse_resource_preset_id" {}
+
+variable "create_default_clickhouse_user" {
+  type = bool
+  default = true
+}
+variable "clickhouse_async_insert_default_user" {
+  type = bool
   default = false
 }

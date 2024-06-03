@@ -1,0 +1,50 @@
+{{ $global := . }}
+{{- range .Values.deployments }}
+apiVersion: flink.apache.org/v1beta1
+kind: FlinkDeployment
+metadata:
+#  namespace: default
+  name: {{ include "flink.fullname" $global }}-{{ .zone }}
+  labels:
+    {{- include "flink.labels" $global | nindent 4 }}
+spec:
+  image: "{{ $global.Values.image.repository }}:{{ $global.Values.image.tag | default $global.Chart.AppVersion }}"
+  flinkVersion: {{ $global.Values.image.flinkVersion }}
+  imagePullPolicy: {{ $global.Values.image.pullPolicy }}
+  flinkConfiguration:
+    taskmanager.numberOfTaskSlots: "{{ $global.Values.defaultTaskManager.numberOfTaskSlots }}"
+    kubernetes.rest-service.exposed.type: {{ $global.Values.service.type }}
+    kubernetes.rest-service.exposed.node-port-address-type: {{ $global.Values.service.nodePortAddressType }}
+    job.autoscaler.enabled: true
+  serviceAccount: flink
+  podTemplate:
+    spec:
+      tolerations:
+      {{- with $global.Values.tolerations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+        - key: "zone"
+          operator: Equal
+          value: {{ .zone }}
+          effect: NoSchedule
+      containers:
+        - name: flink-main-container
+          env:
+            CLICKHOUSE_PORT_SSL: 8443
+            CLICKHOUSE_PORT: 8123
+            KAFKA_PORT_SSL: 9091
+            KAFKA_PORT: 9092
+          envFrom:
+            - secretRef:
+                name: FLINK
+  jobManager:
+    resource:
+      memory: "{{ $global.Values.defaultJobManager.memory }}"
+      cpu: {{ $global.Values.defaultJobManager.cpu }}
+  taskManager:
+    resource:
+      memory: "{{ $global.Values.defaultTaskManager.memory }}"
+      cpu: {{ $global.Values.defaultTaskManager.cpu }}
+
+---
+{{- end }}

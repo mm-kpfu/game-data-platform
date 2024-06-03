@@ -1,0 +1,19 @@
+apiVersion: v2
+name: flink
+description: A Helm chart for Kubernetes
+type: application
+version: 0.1.0
+appVersion: "1.16.0"
+dependencies:
+  - name: flink-kubernetes-operator
+    version: 1.8.0
+    repository: https://downloads.apache.org/flink/flink-kubernetes-operator-1.8.0/
+  - name: superset
+    version: 0.12.11
+    repository: http://apache.github.io/superset/
+  - name: argo-cd
+    repository: https://argoproj.github.io/argo-helm
+    version: 6.9.3
+  - name: cert-manager
+    version: v1.14.5
+    repository: https://charts.jetstack.io

@@ -1,0 +1,15 @@
+dependencies:
+- name: flink-kubernetes-operator
+  repository: https://downloads.apache.org/flink/flink-kubernetes-operator-1.8.0/
+  version: 1.8.0
+- name: superset
+  repository: http://apache.github.io/superset/
+  version: 0.12.11
+- name: argo-cd
+  repository: https://argoproj.github.io/argo-helm
+  version: 6.9.3
+- name: cert-manager
+  repository: https://charts.jetstack.io
+  version: v1.14.5
+digest: sha256:72dfc1a19a5465f741cc3a9da2fe247e82a8ae415fae84eca12e0cb41a6df84a
+generated: "2024-05-20T19:14:25.540830619+03:00"

@@ -46,7 +46,7 @@ resource "yandex_mdb_kafka_cluster" "gaming-data-cluster" {
   }
 }
 
-resource "yandex_mdb_kafka_topic" events {
+resource "yandex_mdb_kafka_topic" "events" {
   count              = length(var.kafka_topics)
   cluster_id         = yandex_mdb_kafka_cluster.gaming-data-cluster.id
   name               = var.kafka_topics[count.index]["topic_name"]
@@ -54,11 +54,22 @@ resource "yandex_mdb_kafka_topic" events {
   replication_factor = var.kafka_topics[count.index]["replication_factor"] == null ? var.kafka_default_replication_factor : var.kafka_topics[count.index]["replication_factor"]
 }
 
+resource "random_password" "password" {
+  for_each         = {for v in var.kafka_users : v.name => v if v.password == null}
+  length           = 8
+  special          = true
+  min_lower        = 1
+  min_numeric      = 1
+  min_special      = 1
+  min_upper        = 1
+  override_special = "_"
+}
+
 resource "yandex_mdb_kafka_user" "kafka_user" {
   count      = length(var.kafka_users)
   cluster_id = yandex_mdb_kafka_cluster.gaming-data-cluster.id
   name       = var.kafka_users[count.index]["name"]
-  password   = var.kafka_users[count.index]["password"]
+  password   = var.kafka_users[count.index]["password"] == null ? random_password.password[var.kafka_users[count.index]["name"]].result : var.kafka_users[count.index]["password"]
 
   dynamic "permission" {
     for_each = var.kafka_users[count.index]["permissions"]

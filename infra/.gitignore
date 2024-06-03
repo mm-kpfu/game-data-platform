@@ -5,3 +5,4 @@
 .tfstate
 .env
 backend.conf
+*.tfvars
