@@ -54,7 +54,7 @@ class Command:
 
     def seal_secret(self, value):
         proc = subprocess.Popen(
-            ["kubeseal", "--raw", "--scope", "namespace-wide", "--from-file=/dev/stdin"],
+            ["kubeseal", "--raw", "--scope", "cluster-wide", "--from-file=/dev/stdin"],
             stdout=subprocess.PIPE,
             stdin=subprocess.PIPE,
             stderr=subprocess.PIPE,

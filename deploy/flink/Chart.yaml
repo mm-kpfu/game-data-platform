@@ -8,9 +8,9 @@ dependencies:
   - name: flink-kubernetes-operator
     version: 1.8.0
     repository: https://downloads.apache.org/flink/flink-kubernetes-operator-1.8.0/
-#  - name: superset
-#    version: 0.12.11
-#    repository: http://apache.github.io/superset/
+  - name: superset
+    version: 0.12.11
+    repository: http://apache.github.io/superset/
   - name: argo-cd
     repository: https://argoproj.github.io/argo-helm
     version: 7.1.3

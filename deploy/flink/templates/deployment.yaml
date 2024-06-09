@@ -40,7 +40,7 @@ spec:
           envFrom:
             {{- range $resourceName, $vars := $global.Values.secrets.FLINK }}
             - secretRef:
-                name: FLINK-{{ $resourceName }}
+                name: flink-{{ lower $resourceName }}
             {{- end }}
   {{- if $global.Values.ingress.template }}
   ingress:
