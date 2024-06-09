@@ -7,8 +7,20 @@ image:
   tag: 1.18
   flinkVersion: v1_18
 
+flinkConfiguration:
+  taskmanager.numberOfTaskSlots: '2'
+  kubernetes.rest-service.exposed.type: NodePort
+  kubernetes.rest-service.exposed.node-port-address-type: ExternalIP
+  job.autoscaler.enabled: "true"
+
+ingress:
+  template: null
+  className: null
+  annotations: {}
+
+namespace: default
+
 defaultTaskManager:
-  numberOfTaskSlots: 2
   memory: 4g
   cpu: 2
 
@@ -18,41 +30,26 @@ defaultJobManager:
 
 fullnameOverride: null
 
-imagePullSecrets: []
-
 nameOverride: gdp
-
-podLabels: {}
-
-podSecurityContext: {}
-
-securityContext: {}
-
-service:
-  type: NodePort
-  nodePortAddressType: ExternalIP
-
-volumes: []
-
-volumeMounts: []
-
-nodeSelector: {}
 
 tolerations: []
 
 secrets:
-  GOOGLE:
-    API_KEY: AQCfT1XY0JEAdDwFraonsWeXxdE2yxAxTj3h+JyfpOh+dH6RnrTPwXCR30se/LpbTFl3JdKOiUizB/aZrZFnIBlu/6uc9wCojUcH4dopgfK0fHe0tafB9TOQoHBjFAP2y/71IcDGdu6JmqJOd1HXHTQTuwIEVeBiPEC99j2mqlycBzlJTkZ0mCjFIMDMZ/QUdjycgZBzVJzFbNfM3HGRU18xBvwzlprz9/sJ2+AW8/7TCWfA6Z2ErSzaaom+DJEOc+oLoeHoqhCl46j1dm8LNj0IAcvdyxUBYNUijGRjyqbO9T566ZYP0TQFHKMVgtNMySdzWngXc1uYcz9DIdqlxilzmBiwfVmzbIRM2nHNk4998x14BdCESA==
   FLINK:
-    GOOGLE__API_KEY: AQBDqb7zWbfjuvZwO1eU+fiRUYulWG5cnpXbzFLB4MMajd3koGhV8plcVRFbvYjz9ebtCqjXArVv3GX/CCjLFNEIWmugvQemtAnBuEsvANRj7sBkXKe1X69rbzmQc++7SUNJqb2eGu1A1CMqRetiJosgx2VCQgkDqur7tn+NWKA3Pl7dnuWsSUiZRvS9ZZNgUPq0Nvp1KYN+Bng7/JGCwwt7+uvKMd+rOQIL2qLQ6YEbeIEqN4QaeOpaxfavLVOi+QPA1X51Ni2VmDjyFbcMh7ZUCpZIvcGjn9uGrpSd6jDbQtsOdtQlaUDxztToMnRuHW/gsuj39HbuRfTRFceT3lIVpR28l6ymXna+jUcoVnzvnPTgxa20Kg==
-    CLICKHOUSE__PASSWORD: AQCjEVCqEN6M2L18PJYaMgkOfyFfbjvs3m+1BhNvTo/M6x/Ij1932VcudhgOIGlsQzHwV1TdzQTagLURtZENsLAOPoJKT3mGcJns3hEHRXvEyhBgaanG1zAZWrEARRvUjvaQbxwZzJUmCr0PYcOwz+5wCZxNlIJtp+VOOh+TW6PzazEqZ/XQUcwH2MdJ3M1xxEmX5RFFdaM2XCyALREZR3gbp3PDig9YafpoV1ORzPw38xBCsQhsUd5/sgwcjfbjgQUTttUueC+4jOOkDVGNU/ZnDrZhIPaIasaSpNYs4mcW63RNcdnanpdiMP2sKmqGKC3tQCF43vP5GuHTEhbCnyZOktD3aTuYkHFmUv0oF8G85H/6+CotXBBR9g==
-    CLICKHOUSE__LOGIN: AQCNtGV3MS0aN211t/9P30OVE6c+5Zio90Ijl3Z0me2NVefGsY1uOYt+wGM7Su5UjEjslxza1LgCgGjfHy+WV4MG11ABO92ulOEQintqEZrJ77xGIpbZ3Rvv76dOAANtsMKI41l7dMouNPMaS5+zdYTtjjeLSar/ELqYLpz6Us/lrf/QdYMBVzumrxPzcoxDISNuvhdeYRp+jL3SqOgufr/lUOVnHJLdiPVc+n1eRgBxNrO/w8i0713JXbIq/npMD28yb+4SVT52BVs8fbdOnnv2muZdzmiW4Xp4Um6/WVBFmrm18nTDASAGvmJ190BGOCDbMwMPtrdyUOMFsI1VRkBGOVtYW+x6BbTyY/OOOhP6hnj4jKSLdd5vqTXBS6qG6bE=
-    CLICKHOUSE__HOSTS: AQAmPSlP0Q7DRIplmG662JRc1bcQyRONuuKAHsWXeBbYfPuG8O1E+TTIhzzulJkrU4XKEGoJqGn/PC2r9XTlPvoFFrYcbjYp4qCVx1xJtst8isNyEwgUSpo+lVJ2mmq53gamLqE/9ywQ0kjjpbUOQuVsRFcQ1s0jqK4mwApGe16qo796Az7uTx5Utwn7myAuKc0lmK3sITDdl1T4PSDanAA24XDbdpYyEfsvKy83611Q7C6SnH10p0A1VCb/aYTyU86nl4YvRqIfPOP2uBFvobb4n/8vQslZFvaMRNGP5G8OkmpPaksxZdqNaJ8OePEqPi0ZRPi/0xis2FQh7uXhQmtSeJ24FxMMnTNRayntlURWMzDCeri/Os4N3V9b9k3LnM5fuIrAai7rusa9UBhK/6qbOg8/iq1dykpDhWZKkA==
-    KAFKA__PASSWORD: AQCaa9WzuVZWpmm7Yis1xrdrsJ63lrMXpn+C34GqRpPPyvRbX+q3aYQ1ACzCEjdQ7Dw3EDvxa96Q0XWUo+RIXQHbNdLdYbK8yjh4/VX/6/z6TAv/VmV3rwZiDTcEPeE+3cqirnugF9Q7mb6K5xC6rdCAXt0mFAwMGXBwHGVW3xMc4hQZB4Kei1XnMCseN3urbiu/88c2fWczEakLA3FRHFTBoXmIsiHcvHA7CLwph7u2XqhEgCaNZMHauEYa159fi2FxC8OOEWkewXZVDhf7EdNfzjQfGlvwP7tj2AyjOKzqgb6oqpPpbnEphU+LJRUX+fntXygqPQyn/l9GvgMLegOZqbNemVB7z+pkymPeMslIs5IjghimXkGIHw==
-    KAFKA__LOGIN: AQA8ogrkxsnn5zpYq6fmcrefQTbJQ0AfK06dqZPOzBle2GWSEsbQJTHv0axgNVJGfF0d/CkWd+J/ANxC9gReWTAmlCZZjTPisLyDU8OFTxm9eKdaC7F11HDu13kiqnmqQRrUPlyrr9a5sViNinEm5RZUPN6N0kyydYphRVcZXK9lWWa9W4QxP4a1LcOv4ZqU/jJfz3mG3xm8Ic6IdbUYrOJ99MABThovs0qcbO7BZKAmwgfs2Y+aktSIYV+aF6631SIHyDoFyzcoGaSqj1Y61zoBXxmhMUU6hDGVIbATsSigNxDNFHXwWzMp8IL7S3cUoGyAJLPTQTsp5mMMZFy+08AHCkShvXvy6BlHLWYB2KXy0QlK7pQJwmDV
-    KAFKA__HOSTS: AQAuI3Et0QipFVKcc+uFB3Mzmoff8kfkaFCiJJuZe0Vv4XcUDsHNotfwf1wpmEqGsLSnykRyhAbT+uZGxpsFn3MmhAqt9G50oS+YwCkQn5os+iH1KsFEohnpYsY0Bc8pj/bVCepcV6QLOPpcOIejIdbCb7Qv6btBFkQmoV2AdIGQHUro+q8ZOnBKE4J+LUoWRaNTzJrAYMtbmVZOwd70em8ZZ5V4MwDzknHlzh9Jm24EoJKKLIy3vEkqdA21siGlHSz1UvWkLOtdwHRaV6FzFlQlJVSElGAsxoe34NmvxzuRcB8hvsKKYH4ri9tR+ouiLydwRKnMKQ9U+UYnf/2YRho3Usu6+kfas0SEcmBMTLPSMSJkTfnqXsVzp2pGv+CgCnMiW2+qu+XGZfG5BtANqz62vxMnsavYChj3nYD4YjLqUdMgPlcThU7h+TNDrp/mIPvD6w1aObxn2bTowxLQW329QdXVYZ2A1bv9q96fomVycnEJBfOEZFhK0+8UeC8=
+    KAFKA:
+      PASSWORD: AgC7d88wL/oK+77RUmZFfSG2gBTEVrUVLN5I5X1nqR5ELOB1s5rEKRdh+YFVDoXVB0kud6vN3mP4Gw+iFBPGIv9VdNTsMNe7SEKVWXhXD/Rk3ScZxEyPVsoTn1dSH37YkkrB9mt7rcwO3/I47HqbhBbXkqLb7WMchJ2Yi+D0CBdOdKJQQq1KAK+QSYcJ6empHYlce8iZ+aTS8QHGw/CYf2ucYp1Bd/hKAHhEsu4KJ8hKJ9Ot08z2InpnDwFmk7ORIxU9/hrU0k4C1dtQigziDpmOIjtEbAeJS3nZEX3z20RjF6Nd+sbV+nvbEwCZ8eCiGEBbI/ag7xwAhDqcVS93/EdF4y3L7Xu5LzsO1OVUlYen8qZuqNaBxYbtqQ/mgoLyPwYbol5Um4+92QWQrA5zhTalezv6lTDWi9Azgr78i/lEmQRrhLieDxWQrNEezIApOlq5C5ASWWTp2jrvi1x6y2MvYoLzp8u5DPVFN45kS9zIZ0cksh2ibONJXmofQSwSwGKYc0iJzCMh0ppboyPTzk1uONMhm0VqP30sxH1S16r4B0Gsk68OGXDQzbB9TwrCTOtNGS7rURvy1YiLdiej0naNerROOwleg8/DZAkQ1EYVtsXh4GQxnDW1vg3z5oXWUnqC2N3pb3j0x9Qiyrwv+JbiHvHfdPmIx+KqRrfqNnpQ2JFd2TEnKQpq+k1N+reeRRSeyV5Jdg==
+    CLICKHOUSE:
+      PASSWORD: AgBNapW5obcr1s7vrXuflEucK+45uTloES/sQSdRhlmM7CFz0uLshnP2GNGh01hQNZNUowZHAcUbUuMtx4WrI5tVIGKC+/+j0Lg9qnTUlAi7LSSJWhAK96cjLujw4thvLk4NdwL4fJYOggrrlRN7/bED52an8o8LTF11sQXndA9d4XeqlleAf+jWBDp3R4S6XdVU3c3ahNy60m4Jksj9YnBJJ0UiK7y0YNoAQB5IAizCBpj8Sl9q0MWZP8KJb+GtjMT6yp87zqiYYWvWIeUqbfxV9IfjZJ2ilG8PrLK4meG604za8KJH7eb94l+pqiavknjdnfrutgbSLgWBuyJQItZl+pSry44oa+Mku2EqIJRgjVrX24lmaWKy643wY5pnwC3VTf2min2jAGmrOKOIGWpMgHTrKPrcG6onUHUJ1CiIgBBrzmGE4hnvtrapGlkqdwb+pYYnwYNXG6GwwkCmhrVC+EMXmYiPQj2I1Wml2CbmGMDY1/4i+wSKhKoyCPk9YaSqSo00RQiTfLDbMVXRFCUSGHNeJ+pYb3aaUWlKjgUVCZ3dthyUOhM6d5FnnXLtKDR8fdjTxV6ExlwrxrJWo4l4BFrmyv8rbfurqYfnN0DNJ170oD5MaHsfvIETkU4CtLQmILihuAAzCm3Q41kHo9ac5zIM2N0prrzIK7EhguP/00s91Mnney5NK2k8bHDbW/QxHLDMHQ==
+  SUPERSET:
+    ENV:
+      DB__PASSWORD: AgC05KonbkyF0lBuPIILy6tRTWoCjQgZ06MfIw/eNyXkYlHwcjD7PawASWb4eH+6uu21EPGt4O5zZhxN1BrUDkmaSZcMkGHKrf4SzUf1kYB8b98AG1cUWGnu7wDQxm64Z4vUamf4Rg/1WNOXewcR9R69ogQ+aWmcYyqp5T+6kE6bzZ2E/FqnIX8OPUAdausXU6F4UcbKPc68YMzKCRa+MwqLE5x+AlWLNoCXMmjlZr5pUmjzAMF6VwS/3sIfGlob+fxxC3uWjJENh7gGDzWMbUY3TsEiPdC7XbXw9usmqBKUj6PqVxzjfY18OndvBuk8Z956jISjSkqMwuEFdzgTrwlfVApW2cA5qt2EcbWI0j3Pt4cnbcBR8wMTDqfJ1dEi27dswhdivnza3yzGLCx4n4ukmjSGlu0a6odPx9+JY33/B34GZgRl1lICIZFe7Ky+beJGhaYe0wULA/1skPE2Oli7UU4rvx/9Orkr16R7fwRVPQYSSiAh8XxLzPv54qDvSgbQuesouDrRra+3f66NO9KOJ7QdKnTpnLTMmBT4hVoTqAwxXOOOYyBZUToLT/C0pco2iWoQp5VkDcwoqxgrH3APT03+4L2loDPk2b1p1SLUYM97Un/uTLfMiv6cSG6sp6htArba4CY7qmxz+coRQ13c4WaipRlaUhvx2+BnQ3dNtKdi5nfsnfTXO1EBES72qFt/VWaPmQ==
+    POSTGRES:
+      PASSWORD: AgAZlehdABkEBKUxqnPrTIJ+NcK9OKESvrzVGep3xyqjlGeMAMsYSoM00Wfba4B92XPtXos5/nti2IHSPFoKtcFn1WQE6RdH4IRNnBa8tai2Srvfimp+MEX4NppNdH1yG2y1UPqUSiO5aJBvpf28cReCdHDM0wJps4lvcFOzKeOe+mGMXLiGT9QosnFdsn7hX7kqVMs9QwgmPWjVBICCfl8Ef9odv7IhkI4A3Xye+ilFP65hLiv4bbtnIuWVyXtdVmLrYHV0jJjnZO6musCugeE3xOhxYwTyD7sXqGw1fmb0C5OsEMCH1qQ1kp6GCiz8Nr5BTkdHzIDL+urFmyrrGXdya+erZdCdLg6vEg8yHHGbQzgZHaIoctom8Z7xFX6ZGpnTDGyXIkPgv1UQeHmsYYmKIm4ZyPugS1rzk1VEeebKGLI3P7+L9DXHIR0WamvkrC26F9NCt0VBCkq+XgWnwIRS91zSiiHcJd2DN97Wzs2qtdI5yur9s4PY5QGbuxGrah7HuucQP7p2aF+o49ltHhMyDZCxE1YLO1MRjs+jZNCmI6MX+6uBj41j1czNCp9lcmLcM97nCaL4gMv1uCD8COs6ppx5EroFZ9nlavrg1Fv2+7dFyo/TceqXVVFKF44VGMhuWmskzHeLwYpWiZrrSPhZ67Huqbu8gLoeIQ1CPBgmTNHzu/NRJtpEhMkp7DTO0kkuDUqBqQ==
+      POSTGRES__PASSWORD: AgBz8gn+GQsUtcnFVs/3tqEhFLWYv4svkn/ePz3UFFdqDvCBnLrAUUMNUfStMxUTUPaBrRiUbdlIchcROT1e6QTFo/CvAgZe83q/wxupdgFmzMW1QbEkOduBDUB8StqZC3gr1XkYKDTtpeQ/tL1cYP+obmJopJBjowIiyLu819rHqTg3YyEi2PdDTBXYD5vf1t0r8L/jj1hqYp9zvE2AjYxo+h4/w2VY6V2DtoFHE69TIT88yJHfHBRSmm15nvTpsOjzrvqpSMHFzWAGy1kAub0yMbHSqHo66oSMeMpwCZ/cv0PwIVKKx2FlbRNSMSYs9Fzy/ImFNhjOJwYABou4aPkFEe2j3L+dqLhpgzOT+WLckiabiydQCcg4fTIywTRLqlSuWpQat8G+kuuIkchF2WFNPfkjtdE/sRhbXjwLHAvNTW9iB8CxWqV13U/IqK82gUijtJd1ilkpXXVLmOm+o8gSqYWjxz+GuqSRA74VGdCFaZWeKYr+g19lAqBp7700fq2Z7W6bt/WAcGmthlQW0O9SBuwPq0m5LXrLD5rah+xupZ1PuCA0N4t4hPYBTeOG2JLK/uQHgUAA2mUm9+Ureb+DYV9gaNCVj0lY4dMzooolRvh+vtRHhFXW3TEPfheZPx+7cBtbPPULId+HnfXASin1f9bAlr7bA+OoTfoRF3uX3z/4HmPTwX9KV9CrIlhU3WFT2tmVYA==
 
 superset:
+#  configFromSecret: superset-config
+#  envFromSecret: superset-env
   service:
     type: NodePort
     port: 8088
@@ -64,7 +61,6 @@ superset:
     secret: 'SECRET_KEY = ''12345''
 
       '
-  envFromSecrets: null
   supersetNode:
     command:
       - /bin/sh
@@ -79,6 +75,11 @@ superset:
   postgresql:
     auth:
       enablePostgresUser: false
+#      existingSecret: superset-postgres
+#      secretKeys:
+#        adminPasswordKey: POSTGRES__PASSWORD
+#        userPasswordKey: PASSWORD
+#        replicationPasswordKey: REPLICATION__PASSWORD
     primary:
       tolerations:
         - key: node_group
@@ -92,20 +93,25 @@ superset:
           value: superset-only
           effect: NoSchedule
   redis:
+    auth:
+#      existingSecret: &redisCommonSecretName superset-redis
+#      existingSecretPasswordKey: REDIS__PASSWORD
     master:
+#      extraEnvVarsSecret: *redisCommonSecretName
       tolerations:
         - key: node_group
           operator: Equal
           value: superset-only
           effect: NoSchedule
     replica:
+#      extraEnvVarsSecret: *redisCommonSecretName
       tolerations:
         - key: node_group
           operator: Equal
           value: superset-only
           effect: NoSchedule
   init:
-    loadExamples: true
+    loadExamples: false
 
 flink-kubernetes-operator:
   operatorPod:

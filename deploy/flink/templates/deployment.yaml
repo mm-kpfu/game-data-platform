@@ -3,7 +3,7 @@
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
-#  namespace: default
+  namespace: {{ $global.Values.namespace }}
   name: {{ include "flink.fullname" $global }}-{{ .zone }}
   labels:
     {{- include "flink.labels" $global | nindent 4 }}
@@ -12,10 +12,9 @@ spec:
   flinkVersion: {{ $global.Values.image.flinkVersion }}
   imagePullPolicy: {{ $global.Values.image.pullPolicy }}
   flinkConfiguration:
-    taskmanager.numberOfTaskSlots: "{{ $global.Values.defaultTaskManager.numberOfTaskSlots }}"
-    kubernetes.rest-service.exposed.type: {{ $global.Values.service.type }}
-    kubernetes.rest-service.exposed.node-port-address-type: {{ $global.Values.service.nodePortAddressType }}
-    job.autoscaler.enabled: true
+    {{- with $global.Values.flinkConfiguration }}
+      {{- toYaml . | nindent 4 }}
+    {{- end }}
   serviceAccount: flink
   podTemplate:
     spec:
@@ -30,13 +29,25 @@ spec:
       containers:
         - name: flink-main-container
           env:
-            CLICKHOUSE_PORT_SSL: 8443
-            CLICKHOUSE_PORT: 8123
-            KAFKA_PORT_SSL: 9091
-            KAFKA_PORT: 9092
+            - name: CLICKHOUSE_PORT_SSL
+              value: "8443"
+            - name: CLICKHOUSE_PORT
+              value: "8123"
+            - name: KAFKA_PORT_SSL
+              value: "9091"
+            - name: KAFKA_PORT
+              value: "9092"
           envFrom:
+            {{- range $resourceName, $vars := $global.Values.secrets.FLINK }}
             - secretRef:
-                name: FLINK
+                name: FLINK-{{ $resourceName }}
+            {{- end }}
+  {{- if $global.Values.ingress.template }}
+  ingress:
+    template: {{ $global.Values.ingress.template }}
+    className: {{ $global.Values.ingress.className }}
+    annotations: {{ $global.Values.ingress.annotations }}
+  {{- end }}
   jobManager:
     resource:
       memory: "{{ $global.Values.defaultJobManager.memory }}"

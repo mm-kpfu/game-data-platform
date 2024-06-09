@@ -38,28 +38,36 @@ output "name_prefix" {
   value = var.name_prefix
 }
 
+output "kafka_enabled" {
+  value = var.kafka_enabled
+}
+
 output "kafka_users" {
   sensitive = true
-  value = module.kafka.users
+  value = length(module.kafka) > 0 ? module.kafka[0].users: []
 }
 
 output "kafka_topics" {
-  value = module.kafka.topics
+  value = length(module.kafka) > 0 ? module.kafka[0].topics: []
 }
 
 output "kafka_hosts" {
-  value = module.kafka.hosts
+  value = length(module.kafka) > 0 ? module.kafka[0].hosts: []
+}
+
+output "clickhouse_enabled" {
+  value = var.clickhouse_enabled
 }
 
 output "clickhouse_hosts" {
-  value = module.Clickhouse.cluster_fqdns_list
+  value = length(module.Clickhouse) > 0 ? module.Clickhouse[0].cluster_fqdns_list : []
 }
 
 output "clickhouse_users" {
   sensitive = true
-  value = module.Clickhouse.cluster_users
+  value = length(module.Clickhouse) > 0 ? module.Clickhouse[0].cluster_users : []
 }
 
 output "clickhouse_databases" {
-  value = module.Clickhouse.databases
+  value = length(module.Clickhouse) > 0 ? module.Clickhouse[0].databases : []
 }

@@ -5,7 +5,7 @@ import yaml
 import subprocess
 
 
-ENV_SECRETS_PREFIX = 'GDP_SECRET'
+ENV_SECRETS_PREFIX = 'GDP'
 
 
 class FormatDumper(yaml.SafeDumper):
@@ -54,7 +54,7 @@ class Command:
 
     def seal_secret(self, value):
         proc = subprocess.Popen(
-            ["kubeseal", "--raw", "--scope", "namespace-wide", "--from-file=/dev/stdin", "--cert=/home/eggsy/study/t/game-data-platform/deploy/scripts/cert.pem"],
+            ["kubeseal", "--raw", "--scope", "namespace-wide", "--from-file=/dev/stdin"],
             stdout=subprocess.PIPE,
             stdin=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -73,7 +73,7 @@ class Command:
         prepared_secrets = {}
         for key in variables:
             sealed = self.seal_secret(variables[key])
-            env_vars.append((key.replace(f'{ENV_SECRETS_PREFIX}__', '').split('__', 1), sealed))
+            env_vars.append((key.replace(f'{ENV_SECRETS_PREFIX}__', '').split('__', 2), sealed))
 
         for keys, value in env_vars:
             build_env_map(prepared_secrets, keys, value)
@@ -87,6 +87,9 @@ class Command:
                 variables[key] = v
 
     def add_kafka_variables(self, variables):
+        if not self.obj['outputs']['kafka_enabled']['value']:
+            return
+
         name_prefix = self.obj['outputs']['name_prefix']['value']
         kafka_users = self.obj['outputs']['kafka_users']['value']
         kafka_flink_user = list(filter(lambda u: u['login'] == f'{name_prefix}-flink', kafka_users))
@@ -98,6 +101,9 @@ class Command:
             variables[f'{ENV_SECRETS_PREFIX}__FLINK__KAFKA__HOSTS'] = json.dumps(self.obj['outputs']['kafka_hosts']['value'])
 
     def add_clickhouse_variables(self, variables):
+        if not self.obj['outputs']['clickhouse_enabled']['value']:
+            return
+
         name_prefix = self.obj['outputs']['name_prefix']['value']
         clickhouse_users = self.obj['outputs']['clickhouse_users']['value']
         clickhouse_flink_user = list(filter(lambda u: u['user'] == f'{name_prefix}-flink', clickhouse_users))
@@ -113,18 +119,18 @@ class Command:
             values = yaml.safe_load(f)
 
         variables = {}
-        self.add_env_variables(variables)
         self.add_clickhouse_variables(variables)
         self.add_kafka_variables(variables)
+        self.add_env_variables(variables)
+
         secrets = self.prepare_secrets(variables)
 
         # Remove old secrets
         values['secrets'] = {}
         for for_component_key in secrets:
-            if not values['secrets'].get(for_component_key):
-                values['secrets'][for_component_key] = {}
-            for k, v in secrets[for_component_key].items():
-                values['secrets'][for_component_key][k] = v
+            values['secrets'].setdefault(for_component_key, {})
+            for resource, v in secrets[for_component_key].items():
+                values['secrets'][for_component_key].setdefault(resource, v)
 
         values['deployments'] = [{
             'zone': z,

@@ -102,12 +102,6 @@ variable "node_groups" {
   ]
 }
 
-variable "enable_outgoing_traffic" {
-  # configures security group
-  type    = bool
-  default = true
-}
-
 variable "custom_ingress_rules" {
   description = <<-EOF
     Map definition of custom security ingress rules.
@@ -176,6 +170,10 @@ variable "locations" {
 }
 
 #=========================================================KAFKA=========================================================
+variable "kafka_enabled" {
+  default = true
+}
+
 variable "kafka_topics" {
   type = list(object({
     topic_name         = string
@@ -267,6 +265,10 @@ variable "create_default_kafka_user" {
   default = true
 }
 #=====================================================Clickhouse========================================================
+variable "clickhouse_enabled" {
+  default = true
+}
+
 variable "clickhouse_databases" {
   type = list(object({
     name = string

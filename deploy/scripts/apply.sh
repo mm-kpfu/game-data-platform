@@ -18,7 +18,12 @@ apt-get update
 apt-get install helm
 
 helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets
-helm install sealed-secrets -n kube-system --set-string fullnameOverride=sealed-secrets-controller sealed-secrets/sealed-secrets
+helm install sealed-secrets \
+  -n kube-system \
+  --set-string fullnameOverride=sealed-secrets-controller \
+  --set "tolerations[0].key=CriticalAddonsOnly" \
+  --set "tolerations[0].operator=Exists" \
+  sealed-secrets/sealed-secrets
 
 KUBESEAL_VERSION='0.26.2'
 wget "https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL_VERSION:?}/kubeseal-${KUBESEAL_VERSION:?}-linux-amd64.tar.gz"

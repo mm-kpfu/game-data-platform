@@ -5,7 +5,6 @@ locals {
 
   master_security_groups_list = concat(var.security_groups_ids_list, var.enable_default_rules == true ? [
     yandex_vpc_security_group.k8s_main_sg[0].id,
-    yandex_vpc_security_group.k8s_master_whitelist_sg[0].id
   ] : [])
 
   # Merging master labels with node group labels

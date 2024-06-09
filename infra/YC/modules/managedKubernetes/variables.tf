@@ -415,38 +415,6 @@ variable "enable_node_ssh_access" {
   default     = true
 }
 
-variable "enable_node_ports_rules" {
-  description = <<-EOF
-    Enables creation of NodePort port range rule.
-
-    "rule-1" = {
-      protocol       = "TCP"
-      description    = "Rule allows incoming traffic from the Internet to the NodePort port range. Add ports or change existing ones to the required ports."
-      v4_cidr_blocks = ["0.0.0.0/0"]
-      from_port      = 30000
-      to_port        = 32767
-    }
-  EOF
-  type        = bool
-  default     = true
-}
-
-variable "enable_outgoing_traffic" {
-  description = <<-EOF
-    Enables all outgoing traffic. Nodes can connect to Yandex Container Registry, Yandex Object Storage, Docker Hub, and so on..
-
-    "rule-1" = {
-      protocol       = "ANY"
-      description    = "Rule allows all outgoing traffic. Nodes can connect to Yandex Container Registry, Yandex Object Storage, Docker Hub, and so on."
-      v4_cidr_blocks = ["0.0.0.0/0"]
-      from_port      = 0
-      to_port        = 65535
-    }
-  EOF
-  type        = bool
-  default     = true
-}
-
 variable "custom_ingress_rules" {
   description = <<-EOF
     Map definition of custom security ingress rules.

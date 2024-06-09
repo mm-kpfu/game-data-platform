@@ -88,13 +88,13 @@ locals {
     node_memory = 4
     node_cores = 2
     core_fraction = 100
-    node_locations = local.created_subnets
+    node_locations = [for nl in local.created_subnets: nl if contains([for l in var.locations: l.zone], nl.zone)]
     node_taints = ["CriticalAddonsOnly=true:NoSchedule"]
     node_labels = {
       node_group="service"
     }
     fixed_scale = {
-      size = length(local.created_subnets)
+      size = length(var.locations)
     }
     disk_type       = "network-hdd"
     disk_size       = 32
@@ -155,6 +155,7 @@ module "network" {
 }
 
 module "kafka" {
+  count = var.kafka_enabled ? 1 : 0
   source                           = "../modules/managedKafka"
   env                              = var.kafka_env
   subnets                          = local.created_subnets
@@ -182,44 +183,44 @@ resource "yandex_compute_placement_group" "k8s_nodes" {
   placement_strategy_partitions = 5
 }
 
-# resource "time_sleep" "wait_for_iam" {
-#   create_duration = "5s"
-#   depends_on      = [
-#     yandex_resourcemanager_folder_iam_member.sa_calico_network_policy_role,
-#     yandex_resourcemanager_folder_iam_member.sa_cilium_network_policy_role,
-#     yandex_resourcemanager_folder_iam_member.sa_node_group_public_role_admin,
-#     yandex_resourcemanager_folder_iam_member.node_account
-#   ]
-# }
+resource "time_sleep" "wait_for_iam" {
+  create_duration = "5s"
+  depends_on      = [
+    yandex_resourcemanager_folder_iam_member.sa_calico_network_policy_role,
+    yandex_resourcemanager_folder_iam_member.sa_cilium_network_policy_role,
+    yandex_resourcemanager_folder_iam_member.sa_node_group_public_role_admin,
+    yandex_resourcemanager_folder_iam_member.node_account
+  ]
+}
 
-# module "KubernetesCluster" {
-#   source                      = "../modules/managedKubernetes"
-#   network_id                  = module.network.vpc_id
-#   cluster_name                = var.name_prefix
-#   master_locations            = local.master_locations
-#   node_groups                 = local.final_node_groups
-#   public_access               = var.master_public_access
-#   release_channel             = "STABLE"
-#   master_service_account_id   = var.use_existing_sa ? var.master_service_account_id : yandex_iam_service_account.master[0].id
-#   node_service_account_id     = var.use_existing_sa ? var.node_service_account_id : yandex_iam_service_account.node_account[0].id
-#   create_kms                  = true
-#   kms_key                     = { name = "${var.name_prefix}-k8s-flink" }
-#   enable_outgoing_traffic     = var.enable_outgoing_traffic
-#   folder_id                   = var.folder_id
-#   cluster_ipv4_range          = local.k8s_cidr_blocks.cluster_cidr
-#   service_ipv4_range          = local.k8s_cidr_blocks.service_cidr
-#   name_prefix                 = var.name_prefix
-#
-#   depends_on = [
-#     yandex_resourcemanager_folder_iam_member.node_account,
-#     yandex_resourcemanager_folder_iam_member.sa_calico_network_policy_role,
-#     yandex_resourcemanager_folder_iam_member.sa_cilium_network_policy_role,
-#     yandex_resourcemanager_folder_iam_member.sa_node_group_public_role_admin,
-#     time_sleep.wait_for_iam
-#   ]
-# }
-#
+module "KubernetesCluster" {
+  source                      = "../modules/managedKubernetes"
+  network_id                  = module.network.vpc_id
+  cluster_name                = var.name_prefix
+  master_locations            = local.master_locations
+  node_groups                 = local.final_node_groups
+  public_access               = var.master_public_access
+  release_channel             = "STABLE"
+  master_service_account_id   = var.use_existing_sa ? var.master_service_account_id : yandex_iam_service_account.master[0].id
+  node_service_account_id     = var.use_existing_sa ? var.node_service_account_id : yandex_iam_service_account.node_account[0].id
+  create_kms                  = true
+  kms_key                     = { name = "${var.name_prefix}-k8s-flink" }
+  folder_id                   = var.folder_id
+  cluster_ipv4_range          = local.k8s_cidr_blocks.cluster_cidr
+  service_ipv4_range          = local.k8s_cidr_blocks.service_cidr
+  name_prefix                 = var.name_prefix
+
+  depends_on = [
+    yandex_resourcemanager_folder_iam_member.node_account,
+    yandex_resourcemanager_folder_iam_member.sa_calico_network_policy_role,
+    yandex_resourcemanager_folder_iam_member.sa_cilium_network_policy_role,
+    yandex_resourcemanager_folder_iam_member.sa_node_group_public_role_admin,
+    time_sleep.wait_for_iam
+  ]
+}
+
 module "Clickhouse" {
+  count = var.clickhouse_enabled ? 1 : 0
   source                        = "git@github.com:polina-yudina/terraform-yc-clickhouse.git"
   network_id                    = module.network.vpc_id
   name                          = "${var.name_prefix}-clickhouse"

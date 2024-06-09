@@ -32,6 +32,26 @@ resource "yandex_vpc_security_group" "k8s_main_sg" {
   }
 
   ingress {
+    protocol       = "TCP"
+    description    = "Allow access to Kubernetes API via port 6443 from subnet."
+    v4_cidr_blocks = ["0.0.0.0/0"]
+    port           = 6443
+  }
+
+  ingress {
+    protocol       = "TCP"
+    description    = "Allow access to Kubernetes API via port 443 from subnet."
+    v4_cidr_blocks = ["0.0.0.0/0"]
+    port           = 443
+  }
+
+  ingress {
+    protocol = "TCP"
+    port = 22
+    v4_cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
     protocol       = "ICMP"
     description    = "Rule allows debugging ICMP packets from internal subnets."
     v4_cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
@@ -40,30 +60,9 @@ resource "yandex_vpc_security_group" "k8s_main_sg" {
   egress {
     protocol          = "ANY"
     description       = "Rule allows master-node and node-node communication inside a security group."
-    predefined_target = "self_security_group"
+    v4_cidr_blocks = ["0.0.0.0/0"]
     from_port         = 0
     to_port           = 65535
-  }
-}
-
-resource "yandex_vpc_security_group" "k8s_master_whitelist_sg" {
-  count       = var.enable_default_rules ? 1 : 0
-  folder_id   = local.folder_id
-  name        = "k8s-master-whitelist-${random_string.unique_id.result}"
-  description = "Allow access to Kubernetes API from internet."
-  network_id  = var.network_id
-
-  ingress {
-    protocol       = "TCP"
-    description    = "Allow access to Kubernetes API via port 6443 from subnet."
-    v4_cidr_blocks = var.allowed_ips
-    port           = 6443
-  }
-  ingress {
-    protocol       = "TCP"
-    description    = "Allow access to Kubernetes API via port 443 from subnet."
-    v4_cidr_blocks = var.allowed_ips
-    port           = 443
   }
 }
 
@@ -72,38 +71,6 @@ resource "yandex_vpc_security_group" "k8s_nodes" {
   name        = "k8s-nodes-${random_string.unique_id.result}"
   description = "Security group rules for node groups"
   network_id  = var.network_id
-}
-
-resource "yandex_vpc_security_group_rule" "k8s_node_ssh_access_rule" {
-  count                  = var.enable_node_ssh_access ? 1 : 0
-  security_group_binding = yandex_vpc_security_group.k8s_nodes.id
-  direction              = "ingress"
-  description            = "Allow access to worker nodes via SSH from IP's."
-  v4_cidr_blocks         = var.allowed_ips_ssh
-  protocol               = "TCP"
-  port                   = 22
-}
-
-resource "yandex_vpc_security_group_rule" "k8s_node_ports" {
-  count                  = var.enable_node_ports_rules ? 1 : 0
-  security_group_binding = yandex_vpc_security_group.k8s_nodes.id
-  direction              = "ingress"
-  description            = "Rule allows incoming traffic from the Internet to the NodePort port range. Add ports or change existing ones to the required ports."
-  v4_cidr_blocks         = ["0.0.0.0/0"]
-  protocol               = "TCP"
-  from_port              = 30000
-  to_port                = 32767
-}
-
-resource "yandex_vpc_security_group_rule" "k8s_outgoing_traffic" {
-  count                  = var.enable_outgoing_traffic ? 1 : 0
-  security_group_binding = yandex_vpc_security_group.k8s_nodes.id
-  direction              = "egress"
-  description            = "Rule allows all outgoing traffic. Nodes can connect to Yandex Container Registry, Yandex Object Storage, Docker Hub, and so on."
-  v4_cidr_blocks         = ["0.0.0.0/0"]
-  protocol               = "ANY"
-  from_port              = 0
-  to_port                = 65535
 }
 
 # Custom security group rules
