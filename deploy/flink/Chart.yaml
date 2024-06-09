@@ -10,7 +10,7 @@ dependencies:
     repository: https://downloads.apache.org/flink/flink-kubernetes-operator-1.8.0/
   - name: superset
     version: 0.12.11
-    repository: https://github.com/apache/superset/tree/master/helm/superset
+    repository: https://github.com/apache/superset/releases/download/superset-helm-chart-0.12.11/superset-0.12.11.tgz
   - name: argo-cd
     repository: https://argoproj.github.io/argo-helm
     version: 6.9.3
