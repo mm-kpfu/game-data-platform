@@ -13,6 +13,7 @@ dependencies:
     repository: http://apache.github.io/superset/
   - name: argo-cd
     repository: https://argoproj.github.io/argo-helm
+    condition: argo-cd.enabled
     version: 7.1.3
   - name: cert-manager
     version: v1.14.5
