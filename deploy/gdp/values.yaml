@@ -113,7 +113,7 @@ flink-kubernetes-operator:
     create: false
 
 argocd-apps:
-  enabled: false
+  enabled: true
   applications:
     gdp:
       project: default
@@ -121,11 +121,11 @@ argocd-apps:
         - repoURL: https://github.com/mm-kpfu/game-data-platform.git
           targetRevision: HEAD
           path: deploy/gdp
-          directory:
-            recurse: true
           helm:
+            valuesObject:
+              argocd-apps.enabled: false
             valueFiles:
-              - $gdp-values/flink/values.yaml
+              - $gdp-values/deploy/gdp/values.yaml
         - repoURL: https://github.com/mm-kpfu/game-data-platform.git
           ref: gdp-values
       destination:
