@@ -5,8 +5,8 @@ dependencies:
 - name: superset
   repository: http://apache.github.io/superset/
   version: 0.12.11
-- name: cert-manager
-  repository: https://charts.jetstack.io
-  version: v1.14.5
-digest: sha256:b137186a1370bb1550c4abe1718003aec5c84ff9427edb87e7448ec61310194a
-generated: "2024-06-11T19:29:17.957012839+03:00"
+- name: argocd-apps
+  repository: https://argoproj.github.io/argo-helm
+  version: 2.0.0
+digest: sha256:201cbc978a5ffeb9f123fd00d20252d4cbb92ed670247bc53f7d5a7a4a2fcf3d
+generated: "2024-06-11T22:09:27.74772448+03:00"

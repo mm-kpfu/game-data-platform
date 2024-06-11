@@ -112,9 +112,31 @@ flink-kubernetes-operator:
   webhook:
     create: false
 
-cert-manager:
-  enabled: true
-  tolerations:
-    - operator: Exists
-  crds:
-    enabled: true
+argocd-apps:
+  enabled: false
+  applications:
+    gdp:
+      project: default
+      sources:
+        - repoURL: https://github.com/mm-kpfu/game-data-platform.git
+          targetRevision: HEAD
+          path: deploy/gdp
+          directory:
+            recurse: true
+          helm:
+            valueFiles:
+              - $gdp-values/flink/values.yaml
+        - repoURL: https://github.com/mm-kpfu/game-data-platform.git
+          ref: gdp-values
+      destination:
+        name: in-cluster
+        namespace: default
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: false
+        syncOptions:
+          - createNamespace=true
+          - PrunePropagationPolicy=background
+          - PruneLast=false
+          - ApplyOutOfSyncOnly=true

@@ -12,7 +12,7 @@ dependencies:
     version: 0.12.11
     repository: http://apache.github.io/superset/
     condition: superset.enabled
-  - name: cert-manager
-    condition: cert-manager.enabled
-    version: v1.14.5
-    repository: https://charts.jetstack.io
+  - name: argocd-apps
+    condition: argocd-apps.enabled
+    repository: https://argoproj.github.io/argo-helm
+    version: 2.0.0
