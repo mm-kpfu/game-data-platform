@@ -13,6 +13,7 @@ cert-manager:
 
 sealed-secrets:
   fullnameOverride: sealed-secrets-controller
+  namespace: kube-system
   tolerations:
     - key: CriticalAddonsOnly
       operator: Exists
