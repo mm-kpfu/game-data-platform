@@ -145,3 +145,5 @@ argocd-apps:
         - group: argoproj.io
           kind: Application
           name: gdp
+        - group: apiextensions.k8s.io
+          kind: CustomResourceDefinition
