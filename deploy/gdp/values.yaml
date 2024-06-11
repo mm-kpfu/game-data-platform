@@ -140,3 +140,8 @@ argocd-apps:
           - PrunePropagationPolicy=background
           - PruneLast=false
           - ApplyOutOfSyncOnly=true
+          - RespectIgnoreDifferences=true
+      ignoreDifferences:
+        group: argoproj.io
+        kind: Application
+        name: gdp
