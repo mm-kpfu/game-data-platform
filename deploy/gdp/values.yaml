@@ -48,6 +48,7 @@ secrets:
       POSTGRES__PASSWORD: AgCatLYnKwgKRv/wZeTrZCcp7znoDoH1K3QX+2zCKDvEmtkmnVOpGFyKiNGdDdW5hwGAOrMGbe+8lEGtkYX37ymU4m/lUQaO+5Jx+CSoJCQsZUon/DvakDwjhyOgyj0dSSSeZrjCRejaBSb4JJRGpmGCPBdtoEQBycL6jiNNkdky46cKHA1BXwhcsoSxkEo0P5oh5EBHKNyrfcQ4x/qdngiyOu74+Mjp6ar/RlkIgWiMzqehtC6iilrkETtRQ3fU4FtwpU3yvq6CGONS7DT32AT60rYr6cHi/JNs9NcWQ+VljX9P3Hgu5iiL6xqTHpT8DLr4aivwSPSPtQOTMCdaICEUVjMIxCBtY0Xam9v4Z9UKZzK/YWLWpKLyiuioJX8mF6GSwpwnpiWZZQo+SVr+99xFbmXUwzAUgxUTf9yy00PGih3ZsBtze7dqnr3tulXHhKXny1DYMTW+Q+1SvBkrQOeEY/qcNDSjfnjNXdXX73Kug1apXXTDEx3OGLu6/y/P2fJA5b72HNHtDneCnNFeVuULocTXdrAbRJzBkB1YvT+ElWK7QtY7KWbvAbANoNqwUB1W/cXKYzIUIQr1W60Qqr4d6pFxSTNBKgRR6iqPNRnAJC9fOIYiNxazHxn0GEIFonIBrutOg8o9tFYd20u+WEAyDbri6jqH8oHsnHBMhe6hQpBk5zsexHBWjOMM+SeW4opCvsxPVA==
 
 superset:
+  enabled: true
   service:
     type: NodePort
     port: 8088
@@ -111,14 +112,8 @@ flink-kubernetes-operator:
   webhook:
     create: false
 
-argo-cd:
-  enabled: true
-  global:
-    tolerations:
-      - operator: Exists
-        key: CriticalAddonsOnly
-
 cert-manager:
+  enabled: true
   tolerations:
     - operator: Exists
   crds:

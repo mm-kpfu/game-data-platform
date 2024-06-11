@@ -1,5 +1,5 @@
 apiVersion: v2
-name: flink
+name: gdp
 description: A Helm chart for Kubernetes
 type: application
 version: 0.1.0
@@ -11,10 +11,8 @@ dependencies:
   - name: superset
     version: 0.12.11
     repository: http://apache.github.io/superset/
-  - name: argo-cd
-    repository: https://argoproj.github.io/argo-helm
-    condition: argo-cd.enabled
-    version: 7.1.3
+    condition: superset.enabled
   - name: cert-manager
+    condition: cert-manager.enabled
     version: v1.14.5
     repository: https://charts.jetstack.io

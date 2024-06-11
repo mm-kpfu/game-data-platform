@@ -1,0 +1,39 @@
+argo-cd:
+  global:
+    tolerations:
+      - operator: Exists
+        key: CriticalAddonsOnly
+
+argocd-apps:
+  applications:
+    gdp:
+      project: default
+      sources:
+        - repoURL: https://github.com/mm-kpfu/game-data-platform.git
+          targetRevision: HEAD
+          path: deploy/gdp
+          directory:
+            recurse: true
+          helm:
+            valueFiles:
+              - $gdp-values/flink/values.yaml
+        - repoURL: https://github.com/mm-kpfu/game-data-platform.git
+          ref: gdp-values
+      destination:
+        name: in-cluster
+        namespace: default
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: false
+        syncOptions:
+          - createNamespace=true
+          - PrunePropagationPolicy=background
+          - PruneLast=false
+          - ApplyOutOfSyncOnly=true
+
+sealed-secrets:
+  fullnameOverride: sealed-secrets-controller
+  tolerations:
+    - key: CriticalAddonsOnly
+      operator: Exists
