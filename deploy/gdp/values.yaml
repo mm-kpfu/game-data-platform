@@ -142,6 +142,6 @@ argocd-apps:
           - ApplyOutOfSyncOnly=true
           - RespectIgnoreDifferences=true
       ignoreDifferences:
-        group: argoproj.io
-        kind: Application
-        name: gdp
+        - group: argoproj.io
+          kind: Application
+          name: gdp
