@@ -147,3 +147,7 @@ argocd-apps:
           name: gdp
         - group: apiextensions.k8s.io
           kind: CustomResourceDefinition
+          name: flinksessionjobs.flink.apache.org
+        - group: apiextensions.k8s.io
+          kind: CustomResourceDefinition
+          name: flinkdeployments.flink.apache.org
