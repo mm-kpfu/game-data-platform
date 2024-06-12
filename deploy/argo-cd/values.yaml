@@ -8,6 +8,19 @@ cert-manager:
   enabled: true
   tolerations:
     - operator: Exists
+      key: CriticalAddonsOnly
+  webhook:
+    tolerations:
+      - operator: Exists
+        key: CriticalAddonsOnly
+  cainjector:
+    tolerations:
+      - operator: Exists
+        key: CriticalAddonsOnly
+  startupapicheck:
+    tolerations:
+      - operator: Exists
+        key: CriticalAddonsOnly
   crds:
     enabled: true
 

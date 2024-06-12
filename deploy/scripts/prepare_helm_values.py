@@ -33,7 +33,9 @@ class Command:
     ACCESS_SECRET_KEY = os.environ.get('TFSTATE_ACCESS_SECRET_KEY', None)
     KEY = os.environ.get('TFSTATE_KEY', None)
 
-    VALUES_FILEPATH = os.environ.get('VALUES_FILENAME')
+    PRIVATE_KEY = os.environ.get('PRIVATE_KEY', None)
+
+    VALUES_FILEPATH = os.environ.get('VALUES_FILENAME', None)
 
     def __init__(self):
         if not self.FILE_LOCATION:
@@ -53,8 +55,12 @@ class Command:
         self.obj = json.loads(tfstate)
 
     def seal_secret(self, value):
+        command = ["kubeseal", "--raw", "--scope=cluster-wide", "--from-file=/dev/stdin"]
+        if self.PRIVATE_KEY:
+            command.append(f'--cert={self.PRIVATE_KEY}')
+
         proc = subprocess.Popen(
-            ["kubeseal", "--raw", "--scope", "cluster-wide", "--from-file=/dev/stdin"],
+            command,
             stdout=subprocess.PIPE,
             stdin=subprocess.PIPE,
             stderr=subprocess.PIPE,
