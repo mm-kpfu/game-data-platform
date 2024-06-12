@@ -5,6 +5,8 @@ argo-cd:
         key: CriticalAddonsOnly
 
 cert-manager:
+  fullnameOverride: cert-manager
+  nameOverride: cert-manager
   enabled: true
   tolerations:
     - operator: Exists
@@ -21,8 +23,8 @@ cert-manager:
     tolerations:
       - operator: Exists
         key: CriticalAddonsOnly
-  crds:
-    enabled: true
+  installCRDs: true
+  namespace: cert-manager
 
 sealed-secrets:
   fullnameOverride: sealed-secrets-controller
@@ -30,3 +32,4 @@ sealed-secrets:
   tolerations:
     - key: CriticalAddonsOnly
       operator: Exists
+
