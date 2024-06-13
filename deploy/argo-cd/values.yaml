@@ -3,6 +3,9 @@ argo-cd:
     tolerations:
       - operator: Exists
         key: CriticalAddonsOnly
+  configs:
+    params:
+      server.insecure: true  # for common ingress tls
 
 cert-manager:
   fullnameOverride: cert-manager
@@ -33,3 +36,15 @@ sealed-secrets:
     - key: CriticalAddonsOnly
       operator: Exists
 
+ingress-nginx:
+  controller:
+    ingressClassResource:
+      default: true
+    tolerations:
+      - operator: Exists
+        key: CriticalAddonsOnly
+    admissionWebhooks:
+      patch:
+        tolerations:
+          - operator: Exists
+            key: CriticalAddonsOnly

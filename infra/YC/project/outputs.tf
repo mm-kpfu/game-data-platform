@@ -52,7 +52,7 @@ output "kafka_topics" {
 }
 
 output "kafka_hosts" {
-  value = length(module.kafka) > 0 ? module.kafka[0].hosts: []
+  value = length(module.kafka) > 0 ? module.kafka[0].hosts: {}
 }
 
 output "clickhouse_enabled" {

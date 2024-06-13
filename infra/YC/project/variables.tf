@@ -79,7 +79,7 @@ variable "node_groups" {
       name = "flink-common"
       auto_scale = {
         min     = 1
-        max     = 32
+        max     = 10
         initial = 1
       },
       node_labels = {

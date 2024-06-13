@@ -1,0 +1,23 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: default-issuer
+spec:
+  acme:
+    email: {{ .Values.certmanager.issuer.email }}
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: cert-manager-cluster-issuer-private-key
+    solvers:
+      - http01:
+          ingress:
+            ingressClassName: nginx
+            podTemplate:
+              spec:
+                tolerations:
+                  - operator: Exists
+                    key: CriticalAddonsOnly
+                  - key: node_group
+                    operator: Equal
+                    value: superset-only
+                    effect: NoSchedule
