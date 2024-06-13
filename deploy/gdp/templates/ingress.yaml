@@ -6,9 +6,7 @@ metadata:
   name: ingress
 spec:
   rules:
-    {{- range .Values.deployments }}
-    - host: flink-{{ .zone }}.{{ $global.Values.domain }}
-      http:
+    - http:
         paths:
           - path: /
             pathType: Prefix
@@ -17,9 +15,7 @@ spec:
                 name: {{ include "flink.fullname" $global }}-{{ .zone }}-rest
                 port:
                   number: 8081
-    {{- end }}
-    - host: superset.{{ .Values.domain }}
-      http:
+    - http:
         paths:
           - path: /
             pathType: Prefix
@@ -28,8 +24,7 @@ spec:
                 port:
                   number: {{ .Values.superset.service.port }}
                 name: {{ include "flink.fullname" $global }}-superset
-    - host: argocd.{{ .Values.domain }}
-      http:
+    - http:
         paths:
           - path: /
             pathType: Prefix
