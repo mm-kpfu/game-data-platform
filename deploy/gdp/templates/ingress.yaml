@@ -4,18 +4,32 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress
+  annotations:
+    cert-manager.io/cluster-issuer: default-issuer
 spec:
+  tls:
+    - hosts:
+      {{- range .Values.deployments }}
+      - flink-{{ .zone }}.{{ $global.Values.domain }}
+      {{- end }}
+      - superset.{{ .Values.domain }}
+      - argocd.{{ .Values.domain }}
+      secretName: ingress-tls-cert
   rules:
-    - http:
+    {{- range .Values.deployments }}
+    - host: flink-{{ .zone }}.{{ $global.Values.domain }}
+      http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: {{ include "flink.fullname" $global }}-ru-central1-a-rest
+                name: {{ include "flink.fullname" $global }}-{{ .zone }}-rest
                 port:
                   number: 8081
-    - http:
+    {{- end }}
+    - host: superset.{{ .Values.domain }}
+      http:
         paths:
           - path: /
             pathType: Prefix
@@ -24,7 +38,8 @@ spec:
                 port:
                   number: {{ .Values.superset.service.port }}
                 name: {{ include "flink.fullname" $global }}-superset
-    - http:
+    - host: argocd.{{ .Values.domain }}
+      http:
         paths:
           - path: /
             pathType: Prefix
