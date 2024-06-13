@@ -14,7 +14,7 @@ spec:
       {{- end }}
         - superset.{{ .Values.domain }}
         - argocd.{{ .Values.domain }}
-      secretName: ingress
+      secretName: cert-manager-cluster-issuer-private-key
   rules:
     {{- range .Values.deployments }}
     - host: flink-{{ .zone }}.{{ $global.Values.domain }}
