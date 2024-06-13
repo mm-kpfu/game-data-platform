@@ -1,4 +1,5 @@
 argo-cd:
+  fullnameOverride: argocd
   global:
     tolerations:
       - operator: Exists
@@ -37,6 +38,7 @@ sealed-secrets:
       operator: Exists
 
 ingress-nginx:
+  fullnameOverride: ingress-nginx
   controller:
     ingressClassResource:
       default: true

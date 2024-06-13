@@ -14,7 +14,7 @@ spec:
       {{- end }}
       - superset.{{ .Values.domain }}
       - argocd.{{ .Values.domain }}
-      secretName: ingress-tls-cert
+      secretName: tls-cert
   rules:
     {{- range .Values.deployments }}
     - host: flink-{{ .zone }}.{{ $global.Values.domain }}
@@ -47,4 +47,4 @@ spec:
               service:
                 port:
                   number: 80
-                name: "common-argocd-server"
+                name: argocd-server
