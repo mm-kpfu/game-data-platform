@@ -48,7 +48,7 @@ secrets:
       POSTGRES__PASSWORD: AgBr1ze9B89dp0uz0y1oui34PpjVjUqlkWZG4P5lNwh792EDKZGXXjQ2o2bn+nhng4yHURCH4vW3vCJUJC0X0kkddZrm4IOUggIaC9eX2Rc6Q68ZFkkQIOUn95+wDzvIfiWEgFDuKcUF5Tj6ByzM0aznA5xEOB0AKyhCWml4KUfwzdWcNFxkJZB6LkM1BJm88t2PpDM/TdH+EQ3vfH6pZTF/WataNdanLlwVqA4f9s8tounwB97j8iyh2gAiBU1skyqzygl2VP7DIxOt5Vw1ti9KFG7eybhbvS8sbztSbQtcKsZzbza3CHBWIayN9t2aU0qiYKyLBZnk+ttBA3PC9lGNSBseVAxZkXHYe7WK9CTK/Av8EMhTKVYC1a/nx0N0Dp8JeXaAuaquCOwcuVvExrFDpN5IacI9vA2GsD66iBld4GIKrbsA0slt8GO8HHO0Glwz+i7LpXRatWUjt9ARyzdM3IsI0rXS6YheFnKD65HV+7JGjwq3oaIlscHLSIJ5Pr+lgg2+nrR2MhCJQ0kgOxagcm0cWz3k0H1ytCOAAszSm5d+jSE63TaZ2m5h1w/bJJpAZ+PIwOS26tmh9VMAxxGRUXYlbcnJcbMZgjHyfGMqA/V0F64Il4rfmpilOaAcv+zZFzt/BuKpsYq2bOZh0rT65MwIPQbSqr57FDq1dvHT+gDLqiUUT/MjpAsd8/tYpbyuGQ6M2g==
 
 superset:
-  enabled: false
+  enabled: true
   service:
     type: ClusterIP
     port: 8088
@@ -122,7 +122,6 @@ argocd-apps:
           helm:
             valuesObject:
               argocd-apps.enabled: false
-              superset.enabled: true
             valueFiles:
               - $gdp-values/deploy/gdp/values.yaml
         - repoURL: https://github.com/mm-kpfu/game-data-platform.git
