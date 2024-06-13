@@ -12,7 +12,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ include "flink.fullname" $global }}-{{ .zone }}-rest
+                name: {{ include "flink.fullname" $global }}-ru-central1-a-rest
                 port:
                   number: 8081
     - http:
