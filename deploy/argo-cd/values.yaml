@@ -40,6 +40,8 @@ sealed-secrets:
 ingress-nginx:
   fullnameOverride: ingress-nginx
   controller:
+    service:
+      loadBalancerIP: "158.160.134.182"
     ingressClassResource:
       default: true
     tolerations:
