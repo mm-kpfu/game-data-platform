@@ -154,6 +154,11 @@ module "network" {
   ]
 }
 
+resource "yandex_vpc_address" "load_balancer" {
+  count = var.create_load_balancer_ip ? 1 : 0
+  name = "GDP load balancer"
+}
+
 module "kafka" {
   count = var.kafka_enabled ? 1 : 0
   source                           = "../modules/managedKafka"

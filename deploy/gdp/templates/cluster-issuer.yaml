@@ -4,7 +4,7 @@ metadata:
   name: default-issuer
 spec:
   acme:
-    email: {{ .Values.certmanager.issuer.email }}
+    email: {{ .Values.certManager.issuer.email }}
     server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
       name: cert-manager-cluster-issuer-private-key

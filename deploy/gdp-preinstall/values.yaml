@@ -1,3 +1,4 @@
+# https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd
 argo-cd:
   fullnameOverride: argocd
   global:
@@ -8,6 +9,7 @@ argo-cd:
     params:
       server.insecure: true  # for common ingress tls
 
+# https://github.com/cert-manager/cert-manager
 cert-manager:
   fullnameOverride: cert-manager
   nameOverride: cert-manager
@@ -30,6 +32,7 @@ cert-manager:
   installCRDs: true
   namespace: cert-manager
 
+# https://github.com/bitnami-labs/sealed-secrets
 sealed-secrets:
   fullnameOverride: sealed-secrets-controller
   namespace: kube-system
@@ -37,6 +40,7 @@ sealed-secrets:
     - key: CriticalAddonsOnly
       operator: Exists
 
+# https://github.com/kubernetes/ingress-nginx
 ingress-nginx:
   fullnameOverride: ingress-nginx
   controller:

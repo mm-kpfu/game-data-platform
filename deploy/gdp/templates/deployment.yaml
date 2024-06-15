@@ -42,12 +42,6 @@ spec:
             - secretRef:
                 name: flink-{{ lower $resourceName }}
             {{- end }}
-  {{- if $global.Values.ingress.template }}
-  ingress:
-    template: {{ $global.Values.ingress.template }}
-    className: {{ $global.Values.ingress.className }}
-    annotations: {{ $global.Values.ingress.annotations }}
-  {{- end }}
   jobManager:
     resource:
       memory: "{{ $global.Values.defaultJobManager.memory }}"

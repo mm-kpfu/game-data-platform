@@ -34,6 +34,10 @@ output "flink_availability_zones" {
   value = [for loc in var.locations: loc.zone]
 }
 
+output "load_balancer_ip" {
+  value = var.create_load_balancer_ip ? yandex_vpc_address.load_balancer.external_ipv4_address[0].address : null
+}
+
 output "name_prefix" {
   value = var.name_prefix
 }

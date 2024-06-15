@@ -1,5 +1,6 @@
 {{ $global := . }}
 
+{{- if .Values.ingress.domain }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -7,6 +8,7 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: default-issuer
 spec:
+  {{ if .Values.ingress.use_tls && .Values.certManager.issuer.email }}
   tls:
     - hosts:
       {{- range .Values.deployments }}
@@ -15,6 +17,7 @@ spec:
       - superset.{{ .Values.domain }}
       - argocd.{{ .Values.domain }}
       secretName: tls-cert
+  {{- end }}
   rules:
     {{- range .Values.deployments }}
     - host: flink-{{ .zone }}.{{ $global.Values.domain }}
@@ -47,4 +50,6 @@ spec:
               service:
                 port:
                   number: 80
-                name: argocd-server
+                name: {{ .Values.ingress.argocdServiceName }}
+
+{{- end }}

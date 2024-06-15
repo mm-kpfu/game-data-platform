@@ -7,16 +7,12 @@ image:
   tag: 1.18
   flinkVersion: v1_18
 
+# https://nightlies.apache.org/flink/flink-kubernetes-operator-docs-main/docs/operations/configuration/#resourceuser-configuration
 flinkConfiguration:
   taskmanager.numberOfTaskSlots: '2'
   kubernetes.rest-service.exposed.type: ClusterIP
   kubernetes.rest-service.exposed.node-port-address-type: null
   job.autoscaler.enabled: 'true'
-
-ingress:
-  template: null
-  className: null
-  annotations: {}
 
 namespace: default
 
@@ -47,6 +43,7 @@ secrets:
       PASSWORD: AgA+BZzggBHmcqcXsFRG2Hf9ZiSciWd8w/lrsh8Gu1bSu9hMIUuAqKSi+zBsjSp9RlhmHXBFUG0FDmIv16GrUg1DGozdi819MQT8LReLYAWcKB761r9ck9tcbfCVxdkNwtIgg70jL8tjIIuGHDeaVJ3GixfuNKu12KGqWe6HaMy6TPM3wSFrD8PcisPRTxo0vHnEoYa93vVTck0xOiKV4UrMVTxK5RDyjasYY9nOYJTfwFDuIj7XpXrjbG0bSpfaf+ZoGoPleyo/BrLriQFOTM7zFzjThhedz3NgYX2kn4VBf2dQqeKGArXnATHXplWpcmteH9AQzBNGxiL4rlsfshJ/XB5Ks9yrhKfaUHuwaHKbdfup+wqfzgjIv59bi0z86ZdNETbSyf+PyGCLbjbuQ81qsSBw5KncZibfPAE6GTw9uE75gCQ/iZamemKgtgv3VNdow0BiNg32kSf8Qbe5MD0IgN/JXCO21Z4uuFBIr7K5Ii366RU9Rofxmy/5M8fkWhMjfeOSrHEIykjYvRlwJ8o7iTntaNQ2u1tMPJMqVVr5BPQk3sTigGoZGzI16bJ0mtGM7Np+VOQa9+ro+husTZJj5ltgMVasu1ejrMC8jup1DYKHEYpvdbNRzaGWN01BTa7c2HmW35KoruQQ7UvKmjhltXOVYiz8ji8o3TOZX3CtyyE/B6bS9a00w4TupY9Zt/ltIkNFHw==
       POSTGRES__PASSWORD: AgBvBkSsZbYIvvArEjzBrUGRFaU1WjVEXeid2cb++Rt7wxjqjsj33vX2ZB5CyhL6Bbes4FaS57D/ExgWS5kSzBobMdGSydCJXcH4nP04PwisR8LF7O1kQKCDC86yQYIb2sGgNuBn7RaQT3S4Fydqnl/ScIxZG1902zpgKJ/ovLEpfNeWs5P+KowMov8Fq8K1vUzJPLFmVyl7Wkwts4qXdtitIpLiJEWuX7bQTNGIPbmpMwoMnNNo9RnQ8jwUpaQlvq3uMaXhOvvvEY6ElSCfY7R6HL1nAKRTJbwOQ2Zyh41b5579DiXb1WJgCAK+3PkaX+u1bSxFzDw/57Ac+x0NBQhJlKzUNHGMi4lNSA1PN1cZRMLVzYeZM/b63cLbgU9phv3s35TNP3XTDQpH0iPXdjoaV/OD9N0/BGXzazgOG61IbcyWSf1p31eHdDw1C4NSWbbWOU9M6E905xb+3fUM1XOZMtDwRiDXjNshwKoAv+VKHoKmRy/2jnnkEv55ISS02GODJNF5QLiRe9BibnAdXveN9iPKjmN2QviMHpTOGLYdRor7QbPJm9+5qn83OgZgibRjQoCeG/svXv3V0/DyxnUKeyGHcKQEY277+sFtEAESA4VtevBZNw77+2veiKHxyF1tDb+sgfYibmsui1mtmlYZG/urRxyd8TOWGpsOpY61GKJYQJSSYUPwDqxzVOIlcfts1MHvpA==
 
+# https://github.com/apache/superset/blob/master/helm/superset/README.md
 superset:
   enabled: true
   service:
@@ -101,6 +98,7 @@ superset:
   init:
     loadExamples: false
 
+# https://nightlies.apache.org/flink/flink-kubernetes-operator-docs-main/docs/operations/helm/
 flink-kubernetes-operator:
   operatorPod:
     tolerations:
@@ -110,6 +108,7 @@ flink-kubernetes-operator:
   webhook:
     create: true
 
+# https://github.com/argoproj/argo-helm/tree/main/charts/argocd-apps
 argocd-apps:
   enabled: true
   applications:
@@ -144,8 +143,13 @@ argocd-apps:
           kind: Application
           name: gdp
 
-certmanager:
+certManager:
   issuer:
     email: muzafarov.olymp@mail.ru
 
-domain: game-data-platform.ru
+ingress:
+  domain: game-data-platform.ru
+  use_tls: true
+
+  argocdServiceName: argocd-server
+

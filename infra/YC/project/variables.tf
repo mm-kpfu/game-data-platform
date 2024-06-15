@@ -169,6 +169,10 @@ variable "locations" {
   ]
 }
 
+variable "create_load_balancer_ip" {
+  default = true
+}
+
 #=========================================================KAFKA=========================================================
 variable "kafka_enabled" {
   default = true
