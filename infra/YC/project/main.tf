@@ -226,7 +226,7 @@ module "KubernetesCluster" {
 
 module "Clickhouse" {
   count = var.clickhouse_enabled ? 1 : 0
-  source                        = "git@github.com:polina-yudina/terraform-yc-clickhouse.git"
+  source                        = "../modules/managedClickhouse"
   network_id                    = module.network.vpc_id
   name                          = "${var.name_prefix}-clickhouse"
   environment                   = "PRODUCTION"
