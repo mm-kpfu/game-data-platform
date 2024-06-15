@@ -7,7 +7,6 @@ image:
   tag: 1.18
   flinkVersion: v1_18
 
-# https://nightlies.apache.org/flink/flink-kubernetes-operator-docs-main/docs/operations/configuration/#resourceuser-configuration
 flinkConfiguration:
   taskmanager.numberOfTaskSlots: '2'
   kubernetes.rest-service.exposed.type: ClusterIP
@@ -33,17 +32,16 @@ tolerations: []
 secrets:
   FLINK:
     KAFKA:
-      PASSWORD: AgBJ3niJgW9ZFdq8GwhWLJdlfRQsWh7aYP3bAA65jv5lzyyuPZe7ntRJikMu6zV0kRVIsH4/XYf+2RvSBEPDJK6Row1EVpsV2R42LNpwUoLZ+CoHOFYNiNGK+kX6NK80bdlxOWID1bchcxbCfmhELDHXhi2jQzEYy+RqV2wQQ4JMsj7GZaj0UpeiZkS1k3VXcsjpN0uKV2WXwJTI9me6KMpmM+38spJDHVWaeUQbwL0063MB/hzJcrmzSKMyimoGKPAkp9hFLI3tSZuLA0gZ2x3J7yviagMT1HcEeyPMsx0kKLDIl/c0Q+WDVAngX24p1lk0UJiyLnrtaFVL+uDW0HdPIYOoz94QjhnTxOFjrAJdJiwKeO9lbSrANhAhXiC7CB5+3P9s4wsH6xOolyBpfb6AXXwfd0tdZu0lsg9wmkhRWzkPxe2xjWD9iNl3jSUIdENBbVa5uGpRcknkNn+XEa5E302WP5aC/jc8sxqrlsRl8MyE6a6nUnXa+/eUS+Yaxfq4DzMnL8wHQiIV+PpiNXQHlX0YzvqPHyEYwK1nUcly1N9m89eO69oNzyUSRAleMzLYbu/l8It4lUmCNaWk/acXWTd2WGVEZjuVOVXKxH1ZuMI9vOUTkPbQ7xFXek4FQ5zRaDLYuzw856GQy4TaEpPVKimmAjzHU4atju136DuheKC6WfAlu7gNTytHJDTdw/zBlFEF8A==
+      PASSWORD: ''
     CLICKHOUSE:
-      PASSWORD: AgCIjuayjkiCXH7agkCD86qPnbU/HrGuv5pP4hZ12NKvtqHvhmFf4nnLWr9MmRSOI6/Iz0hiiRN8qe/pw+fBmIUIpLcczWtKxzhpH2dfKER6ORqeAD78//NTX1s+kuDCuzzUn1/RsPnCcU0zO5C1IWC+u4VxwMsMnEYLsQ+U7hpF4NEncwK25irUFibeSeD0Ks55Ddk1LKMeSFFtXlDcEP00JYIt8nDw/r6xpNOSQbkxLlQSKMQOhDRZMbvnMZZM/AlOOX7vNF1AHIy1OJGz/o5HcyfT78+KeQHJ1COxulpKYC/hVlgWhBKkHJ4pZIfSEeSosoQYDjIrfNFtrzHehWoDRupgTQvKpS3svxokouicpHZs4PYmhxdfa93YRRLU/I8VzTdMpnqNk3FAqW3/r+DTUfWp/Ra5mGpJPOoOiySU9uLPpRiwD2pF6ghm235kxK1f7J5Jp+hmBmMTCzYAxoibNp+5jno584huOGWEXmEHonAqhEdTzYUlWRf6nfY30Z80GEVAvlKhVSiY0I3k3DCjp7V0ehC/GOotCVG83/hM8yxxp2Iq2sTHVZFjpEemfbh980XimYYdlr4bHQdstBvwIv3Is45bMdt38rvqk9saUC+pNeZ5z3GcnUs3+vquh/EaYxgZAIuz/AjYlUaE6uq1OtIaPRwLeGHRaoH1qaSIwcS39fnHsaLT5U+WcQPxjFvtoefKcw==
+      PASSWORD: ''
   SUPERSET:
     ENV:
-      DB__PASSWORD: AgCdTZPaxsChzgyCkN8MmqgTz7I0ZQaLaYI4e+jn+h+DGyUs18EyZ2pS1jWnADFfp5I9MOKszhzADe79swXFUH3nMrRcxbwrDr1U1TqsXUBgNKlLirrDjEe8nuTPHS0o1VDaNdoam6woPeQjh0PwKRvXHQvxvP/lopOWKhAWSAFCQnYUFizquVvAwlYPwMhfd4l7kfxd5KSl0N+nDsRJf8x3Mzv+NTCbtm3RreymNmCSeABzND0kkD6YfD5lNyTVIXbcKIk4TpD/GNGpMiqh0kQXZJMFzA/ExKWikdZWIWaozVlAidwfX8kTu/+o66Yn7pbcM/HfIuf5wo2gJCFqswNWshHv6UDpkbIhv+Hp0bwhqtWj4pOCiAHaDP2b1HnBBc2zvglBoM48tMIZWprJ4P2nAA+LwVQl1VD50GBlFzATqNdWwu/ha+0KRjKf28kFOuCIoaiPCDc7MWQnHKxXBlWGRp7MK+MyK7KbVzZJcJVYKy8n7ceure9Xh1F+QwlVNhf4kNxXXuuWpWAjzQFOCXDRJJHwKMCOmIntyLb//uuEU6o8jusi/S9t35w40QW7ZnkO9UEvwsCHs6VPyUb0uaFhe+qYggmtLjHe8BcIaZ+2dK+owFh0z8/KckQuHyrTROni+INJ/XrCAA2lzeMdlVUXO/x04v3z7OpUt7QstiZcrvx+xreBxLC9n3IS2SSMIj7SHHzI1Q==
+      DB__PASSWORD: ''
     POSTGRES:
-      PASSWORD: AgA+BZzggBHmcqcXsFRG2Hf9ZiSciWd8w/lrsh8Gu1bSu9hMIUuAqKSi+zBsjSp9RlhmHXBFUG0FDmIv16GrUg1DGozdi819MQT8LReLYAWcKB761r9ck9tcbfCVxdkNwtIgg70jL8tjIIuGHDeaVJ3GixfuNKu12KGqWe6HaMy6TPM3wSFrD8PcisPRTxo0vHnEoYa93vVTck0xOiKV4UrMVTxK5RDyjasYY9nOYJTfwFDuIj7XpXrjbG0bSpfaf+ZoGoPleyo/BrLriQFOTM7zFzjThhedz3NgYX2kn4VBf2dQqeKGArXnATHXplWpcmteH9AQzBNGxiL4rlsfshJ/XB5Ks9yrhKfaUHuwaHKbdfup+wqfzgjIv59bi0z86ZdNETbSyf+PyGCLbjbuQ81qsSBw5KncZibfPAE6GTw9uE75gCQ/iZamemKgtgv3VNdow0BiNg32kSf8Qbe5MD0IgN/JXCO21Z4uuFBIr7K5Ii366RU9Rofxmy/5M8fkWhMjfeOSrHEIykjYvRlwJ8o7iTntaNQ2u1tMPJMqVVr5BPQk3sTigGoZGzI16bJ0mtGM7Np+VOQa9+ro+husTZJj5ltgMVasu1ejrMC8jup1DYKHEYpvdbNRzaGWN01BTa7c2HmW35KoruQQ7UvKmjhltXOVYiz8ji8o3TOZX3CtyyE/B6bS9a00w4TupY9Zt/ltIkNFHw==
-      POSTGRES__PASSWORD: AgBvBkSsZbYIvvArEjzBrUGRFaU1WjVEXeid2cb++Rt7wxjqjsj33vX2ZB5CyhL6Bbes4FaS57D/ExgWS5kSzBobMdGSydCJXcH4nP04PwisR8LF7O1kQKCDC86yQYIb2sGgNuBn7RaQT3S4Fydqnl/ScIxZG1902zpgKJ/ovLEpfNeWs5P+KowMov8Fq8K1vUzJPLFmVyl7Wkwts4qXdtitIpLiJEWuX7bQTNGIPbmpMwoMnNNo9RnQ8jwUpaQlvq3uMaXhOvvvEY6ElSCfY7R6HL1nAKRTJbwOQ2Zyh41b5579DiXb1WJgCAK+3PkaX+u1bSxFzDw/57Ac+x0NBQhJlKzUNHGMi4lNSA1PN1cZRMLVzYeZM/b63cLbgU9phv3s35TNP3XTDQpH0iPXdjoaV/OD9N0/BGXzazgOG61IbcyWSf1p31eHdDw1C4NSWbbWOU9M6E905xb+3fUM1XOZMtDwRiDXjNshwKoAv+VKHoKmRy/2jnnkEv55ISS02GODJNF5QLiRe9BibnAdXveN9iPKjmN2QviMHpTOGLYdRor7QbPJm9+5qn83OgZgibRjQoCeG/svXv3V0/DyxnUKeyGHcKQEY277+sFtEAESA4VtevBZNw77+2veiKHxyF1tDb+sgfYibmsui1mtmlYZG/urRxyd8TOWGpsOpY61GKJYQJSSYUPwDqxzVOIlcfts1MHvpA==
+      PASSWORD: ''
+      POSTGRES__PASSWORD: ''
 
-# https://github.com/apache/superset/blob/master/helm/superset/README.md
 superset:
   enabled: true
   service:
@@ -98,7 +96,6 @@ superset:
   init:
     loadExamples: false
 
-# https://nightlies.apache.org/flink/flink-kubernetes-operator-docs-main/docs/operations/helm/
 flink-kubernetes-operator:
   operatorPod:
     tolerations:
@@ -108,7 +105,6 @@ flink-kubernetes-operator:
   webhook:
     create: true
 
-# https://github.com/argoproj/argo-helm/tree/main/charts/argocd-apps
 argocd-apps:
   enabled: true
   applications:
@@ -150,6 +146,4 @@ certManager:
 ingress:
   domain: game-data-platform.ru
   use_tls: true
-
   argocdServiceName: argocd-server
-
