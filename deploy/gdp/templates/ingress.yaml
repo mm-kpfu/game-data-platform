@@ -8,19 +8,19 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: default-issuer
 spec:
-  {{ if .Values.ingress.use_tls && .Values.certManager.issuer.email }}
+  {{ if and .Values.ingress.use_tls .Values.certManager.issuer.email }}
   tls:
     - hosts:
       {{- range .Values.deployments }}
-      - flink-{{ .zone }}.{{ $global.Values.domain }}
+      - flink-{{ .zone }}.{{ $global.Values.ingress.domain }}
       {{- end }}
-      - superset.{{ .Values.domain }}
-      - argocd.{{ .Values.domain }}
+      - superset.{{ .Values.ingress.domain }}
+      - argocd.{{ .Values.ingress.domain }}
       secretName: tls-cert
   {{- end }}
   rules:
     {{- range .Values.deployments }}
-    - host: flink-{{ .zone }}.{{ $global.Values.domain }}
+    - host: flink-{{ .zone }}.{{ $global.Values.ingress.domain }}
       http:
         paths:
           - path: /
@@ -31,7 +31,7 @@ spec:
                 port:
                   number: 8081
     {{- end }}
-    - host: superset.{{ .Values.domain }}
+    - host: superset.{{ .Values.ingress.domain }}
       http:
         paths:
           - path: /
@@ -41,7 +41,7 @@ spec:
                 port:
                   number: {{ .Values.superset.service.port }}
                 name: {{ include "flink.fullname" $global }}-superset
-    - host: argocd.{{ .Values.domain }}
+    - host: argocd.{{ .Values.ingress.domain }}
       http:
         paths:
           - path: /
