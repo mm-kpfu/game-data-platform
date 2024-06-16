@@ -6,7 +6,7 @@ metadata:
   namespace: {{ $global.Values.namespace }}
   name: {{ include "flink.fullname" $global }}-{{ .zone }}
   labels:
-    xyzd: werwere
+    xyzd: "1233333333333333333333333333333333333333333"
     {{- include "flink.labels" $global | nindent 4 }}
 spec:
   image: "{{ $global.Values.image.repository }}:{{ $global.Values.image.tag | default $global.Chart.AppVersion }}"
@@ -16,7 +16,7 @@ spec:
     {{- with $global.Values.flinkConfiguration }}
       {{- toYaml . | nindent 4 }}
     {{- end }}
-  serviceAccount: flink
+  serviceAccount: gdp-flink
   podTemplate:
     spec:
       tolerations:

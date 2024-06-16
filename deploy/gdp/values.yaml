@@ -95,8 +95,6 @@ superset:
     loadExamples: false
 
 flink-kubernetes-operator:
-  jobServiceAccount:
-    create: false
   operatorPod:
     tolerations:
       - key: zone

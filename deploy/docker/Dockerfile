@@ -26,5 +26,9 @@ RUN mkdir -p /usr/local/share/ca-certificates/Yandex/ && \
 # install PyFlink
 RUN pip3 install apache-flink==1.18.0
 
-COPY entrypoint.sh /
-ENTRYPOINT ["/entrypoint.sh"]
+RUN cp /docker-entrypoint.sh /old-docker-entrypoint.sh
+
+RUN chmod 777 /old-docker-entrypoint.sh
+
+COPY entrypoint.sh /docker-entrypoint.sh
+RUN chmod 777 /docker-entrypoint.sh
