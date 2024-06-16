@@ -6,6 +6,7 @@ metadata:
   namespace: {{ $global.Values.namespace }}
   name: {{ include "flink.fullname" $global }}-{{ .zone }}
   labels:
+    xyzd: werwere
     {{- include "flink.labels" $global | nindent 4 }}
 spec:
   image: "{{ $global.Values.image.repository }}:{{ $global.Values.image.tag | default $global.Chart.AppVersion }}"
