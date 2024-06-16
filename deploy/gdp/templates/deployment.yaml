@@ -16,7 +16,7 @@ spec:
     {{- with $global.Values.flinkConfiguration }}
       {{- toYaml . | nindent 4 }}
     {{- end }}
-  serviceAccount: gdp-flink
+  serviceAccount: flink
   podTemplate:
     spec:
       tolerations:
