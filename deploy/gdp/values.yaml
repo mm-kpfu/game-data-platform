@@ -142,6 +142,6 @@ certManager:
     email: muzafarov.olymp@mail.ru
 
 ingress:
-  domain: game-data-platform.ru
+  domain:
   use_tls: true
   argocdServiceName: argocd-server
