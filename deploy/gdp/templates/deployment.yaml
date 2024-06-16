@@ -33,6 +33,8 @@ spec:
               value: "8443"
             - name: CLICKHOUSE_PORT
               value: "8123"
+            - name: CLICKHOUSE_DRIVER_PORT
+              value: "9000"
             - name: KAFKA_PORT_SSL
               value: "9091"
             - name: KAFKA_PORT
