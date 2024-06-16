@@ -28,13 +28,6 @@ spec:
           effect: NoSchedule
       containers:
         - name: flink-main-container
-          startupProbe:
-            httpGet:
-              path: /config
-              port: rest
-            failureThreshold: 30
-            periodSeconds: 10
-            initialDelaySeconds: 40
           env:
             - name: CLICKHOUSE_PORT_SSL
               value: "8443"
@@ -69,6 +62,13 @@ spec:
             operator: Equal
             value: {{ .zone }}
             effect: NoSchedule
+  {{ if $global.Values.applicationMode.jarURI }}
+  job:
+    jarURI: {{ $global.Values.applicationMode.jarURI }}
+    parallelism: {{ $global.Values.applicationMode.parallelism }}
+    upgradeMode: {{ $global.Values.applicationMode.upgradeMode }}
+    state: {{ $global.Values.applicationMode.state }}
+  {{ end }}
 
 ---
 {{- end }}

@@ -27,6 +27,12 @@ fullnameOverride: null
 
 nameOverride: gdp
 
+applicationMode:
+  jarURI: ~
+  parallelism: ~
+  upgradeMode: ~
+  state: ~
+
 tolerations: []
 
 secrets:
