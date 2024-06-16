@@ -6,7 +6,6 @@ metadata:
   namespace: {{ $global.Values.namespace }}
   name: {{ include "flink.fullname" $global }}-{{ .zone }}
   labels:
-    xyzd: "1233333333333333333333333333333333333333333"
     {{- include "flink.labels" $global | nindent 4 }}
 spec:
   image: "{{ $global.Values.image.repository }}:{{ $global.Values.image.tag | default $global.Chart.AppVersion }}"
@@ -29,6 +28,13 @@ spec:
           effect: NoSchedule
       containers:
         - name: flink-main-container
+          startupProbe:
+            httpGet:
+              path: /config
+              port: rest
+            failureThreshold: 30
+            periodSeconds: 10
+            initialDelaySeconds: 40
           env:
             - name: CLICKHOUSE_PORT_SSL
               value: "8443"
