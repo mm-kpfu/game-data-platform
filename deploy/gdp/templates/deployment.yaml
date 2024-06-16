@@ -28,6 +28,10 @@ spec:
           effect: NoSchedule
       containers:
         - name: flink-main-container
+          {{ if $global.Values.command }}
+          command:
+            - {{ $global.Values.command }}
+          {{ end }}
           env:
             - name: CLICKHOUSE_PORT_SSL
               value: "8443"

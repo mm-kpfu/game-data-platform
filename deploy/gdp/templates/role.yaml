@@ -1,3 +1,4 @@
+{{ if index .Values "flink-kubernetes-operator" "jobServiceAccount" "create" }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -23,5 +24,6 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 subjects:
   - kind: ServiceAccount
-    name: flink
+    name: {{ index .Values "flink-kubernetes-operator" "jobServiceAccount" "name" }}
     namespace: default
+{{ end }}
