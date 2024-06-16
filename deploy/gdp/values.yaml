@@ -4,7 +4,7 @@ deployments:
 image:
   repository: realeggsy/pyflink
   pullPolicy: IfNotPresent
-  tag: latest
+  tag: session
   flinkVersion: v1_18
 
 flinkConfiguration:
@@ -49,7 +49,7 @@ secrets:
       PASSWORD: AgCIrJNtWp7vKyrpjI6Pjk9FxI9DVMH1cJgiJcwKN0bXCuCVbAu+87h0MA9t5W9otRlAXNbVyeyXYDoIAqOM8U7fc3zIDuv9wheakuPHq6LzTzGZZQRMuF0oCrUJSCLnS2Ws8DDpBq7o3sInyNN5YsLOlZ2QxXUYjip0CQCHeYN7Sr6ma1dAQPu8LHCKE7/HNvOFOxtm1WqgKak2bPzsm1o3PrHgwpupMjIVdUaibqya12vI0EZ1hNmpNcFieJtCQh9S1obPlPprf+evm6NSbJ2+Kfo+FGXSkoEuwMfJdkQjZBWNcXsuzzba7pYKjyLVgoQGdyYIa1SZxcWPfJlsjF2oEtAOChROKw1bleZIPbtYY8C6NTicTPBh4w9sLbW95yZQJzxm3cfIo9eRDFfaaq7y7sTx1t6BoWV99zzeIIlN73+/T0XMXFZgYTSHAI3rE/AC2D2QARWDjkhLVfRXJysPQszk2y9fYrfr8a6N7CSg0pCBpSM3TlFQWSEYJqDedvyiK4CI2hEdOQtvVe6wbmPEb5Fy/yZITrcMPxFp8Q8hdUGWI0G753l4sdLkyPmEceIJ3uGB4vYi6ECOrPSrLDg+JoPLVhj2Rz1sJIILrcl2s720gmPOP1e2jMPNyaJMeaXGjx4o4X8u8GwaXZmeAE+KT8rfb7Fd0gcjf1YiUR60a10/KgfHhbvh+rr35XEEnt60Ou1V
 
 superset:
-  enabled: false
+  enabled: true
   service:
     type: ClusterIP
     port: 8088
@@ -123,7 +123,6 @@ argocd-apps:
           helm:
             valuesObject:
               argocd-apps.enabled: false
-              superset.enabled: true
             valueFiles:
               - $gdp-values/deploy/gdp/values.yaml
         - repoURL: https://github.com/mm-kpfu/game-data-platform.git
