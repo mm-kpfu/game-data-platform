@@ -102,6 +102,10 @@ variable "node_groups" {
   ]
 }
 
+variable "enable_default_rules" {
+  default = true
+}
+
 variable "custom_ingress_rules" {
   description = <<-EOF
     Map definition of custom security ingress rules.
@@ -216,7 +220,7 @@ variable "kafka_default_replication_factor" {
 
 variable "kafka_brokers_count" {
   type    = number
-  default = 2
+  default = 1
 }
 
 variable "kafka_host_preset_id" {

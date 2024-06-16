@@ -157,6 +157,10 @@ module "network" {
 resource "yandex_vpc_address" "load_balancer" {
   count = var.create_load_balancer_ip ? 1 : 0
   name = "GDP load balancer"
+
+  external_ipv4_address {
+    zone_id = "ru-central1-a"
+  }
 }
 
 module "kafka" {
@@ -180,6 +184,7 @@ module "kafka" {
   kafka_disk_size                  = var.kafka_disk_size
   kafka_host_preset_id             = var.kafka_host_preset_id
   kafka_default_partitions         = var.kafka_default_partitions
+  security_group_ids               = var.enable_default_rules ? [yandex_vpc_security_group.kafka_k8s[0].id] : []
 }
 
 resource "yandex_compute_placement_group" "k8s_nodes" {
@@ -188,40 +193,25 @@ resource "yandex_compute_placement_group" "k8s_nodes" {
   placement_strategy_partitions = 5
 }
 
-resource "time_sleep" "wait_for_iam" {
-  create_duration = "5s"
-  depends_on      = [
-    yandex_resourcemanager_folder_iam_member.sa_calico_network_policy_role,
-    yandex_resourcemanager_folder_iam_member.sa_cilium_network_policy_role,
-    yandex_resourcemanager_folder_iam_member.sa_node_group_public_role_admin,
-    yandex_resourcemanager_folder_iam_member.node_account
-  ]
-}
-
 module "KubernetesCluster" {
-  source                      = "../modules/managedKubernetes"
+  source                      = "git@github.com:terraform-yc-modules/terraform-yc-kubernetes.git"
   network_id                  = module.network.vpc_id
   cluster_name                = var.name_prefix
   master_locations            = local.master_locations
   node_groups                 = local.final_node_groups
   public_access               = var.master_public_access
   release_channel             = "STABLE"
-  master_service_account_id   = var.use_existing_sa ? var.master_service_account_id : yandex_iam_service_account.master[0].id
-  node_service_account_id     = var.use_existing_sa ? var.node_service_account_id : yandex_iam_service_account.node_account[0].id
+  use_existing_sa             = false
   create_kms                  = true
+  enable_default_rules        = false
+  enable_node_ports_rules     = false
+  enable_outgoing_traffic     = false
+  enable_node_ssh_access      = false
   kms_key                     = { name = "${var.name_prefix}-k8s-flink" }
   folder_id                   = var.folder_id
   cluster_ipv4_range          = local.k8s_cidr_blocks.cluster_cidr
   service_ipv4_range          = local.k8s_cidr_blocks.service_cidr
-  name_prefix                 = var.name_prefix
-
-  depends_on = [
-    yandex_resourcemanager_folder_iam_member.node_account,
-    yandex_resourcemanager_folder_iam_member.sa_calico_network_policy_role,
-    yandex_resourcemanager_folder_iam_member.sa_cilium_network_policy_role,
-    yandex_resourcemanager_folder_iam_member.sa_node_group_public_role_admin,
-    time_sleep.wait_for_iam
-  ]
+  security_groups_ids_list    = var.enable_default_rules ? [yandex_vpc_security_group.k8s_main_sg[0].id] : []
 }
 
 module "Clickhouse" {
@@ -237,5 +227,6 @@ module "Clickhouse" {
   users                         = local.final_clickhouse_users
   databases                     = var.clickhouse_databases
   hosts                         = [for host in var.clickhouse_hosts: merge(host, {subnet_id = [for s in local.created_subnets: s.subnet_id if host.zone == s.zone][0]})]
-  deletion_protection           = true
+#   deletion_protection           = true
+  security_group_ids            = var.enable_default_rules ? [yandex_vpc_security_group.clickhouse_k8s[0].id] : []
 }

@@ -17,6 +17,10 @@ variable "env" {
   type = string
 }
 
+variable "security_group_ids" {
+  default = []
+}
+
 variable "kafka_topics" {
   type = list(object({
     topic_name         = string

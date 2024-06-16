@@ -13,6 +13,7 @@ resource "yandex_mdb_kafka_cluster" "gaming-data-cluster" {
   environment = strcontains(lower(var.env), lower("prod")) ? "PRODUCTION" : "PRESTABLE"
   network_id  = var.vpc_id
   subnet_ids  = [for s in var.subnets : s.subnet_id]
+  security_group_ids = var.security_group_ids
 
   config {
     version          = var.kafka_version
