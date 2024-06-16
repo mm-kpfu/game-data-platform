@@ -25,3 +25,10 @@ RUN mkdir -p /usr/local/share/ca-certificates/Yandex/ && \
 
 # install PyFlink
 RUN pip3 install apache-flink==1.18.0
+
+CMD flink run examples/streaming/WordCount.jar & \
+    flink run examples/streaming/WindowJoin.jar & \
+    flink run examples/streaming/TopSpeedWindowing.jar & \
+    flink run examples/streaming/SessionWindowing.jar & \
+    flink run examples/streaming/Iteration.jar & \
+    flink run examples/streaming/StateMachineExample.jar

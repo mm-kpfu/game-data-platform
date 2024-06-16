@@ -10,7 +10,7 @@ metadata:
 spec:
   image: "{{ $global.Values.image.repository }}:{{ $global.Values.image.tag | default $global.Chart.AppVersion }}"
   flinkVersion: {{ $global.Values.image.flinkVersion }}
-  imagePullPolicy: {{ $global.Values.image.pullPolicy }}
+  imagePullPolicy: Always
   flinkConfiguration:
     {{- with $global.Values.flinkConfiguration }}
       {{- toYaml . | nindent 4 }}
@@ -19,9 +19,9 @@ spec:
   podTemplate:
     spec:
       tolerations:
-      {{- with $global.Values.tolerations }}
+        {{- with $global.Values.tolerations }}
         {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- end }}
         - key: "zone"
           operator: Equal
           value: {{ .zone }}
@@ -52,6 +52,16 @@ spec:
     resource:
       memory: "{{ $global.Values.defaultTaskManager.memory }}"
       cpu: {{ $global.Values.defaultTaskManager.cpu }}
+    podTemplate:
+      spec:
+        tolerations:
+          {{- with $global.Values.tolerations }}
+          {{- toYaml . | nindent 8 }}
+          {{- end }}
+          - key: "zone"
+            operator: Equal
+            value: {{ .zone }}
+            effect: NoSchedule
 
 ---
 {{- end }}
