@@ -1,4 +1,5 @@
 .idea
-
+*/charts
+*/Chart.lock
 .env
 *.pem
