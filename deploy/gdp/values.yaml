@@ -108,7 +108,7 @@ superset:
           value: superset-only
           effect: NoSchedule
   init:
-    loadExamples: false
+    loadExamples: true
 
 flink-kubernetes-operator:
   operatorPod:
