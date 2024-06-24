@@ -100,8 +100,8 @@ class Command:
         kafka_users = self.obj['outputs']['kafka_users']['value']
         kafka_flink_user = list(filter(lambda u: u['login'] == f'{name_prefix}-flink', kafka_users))
         if kafka_flink_user:
-            variables[f'{ENV_SECRETS_PREFIX}__FLINK__KAFKA__PASSWORD'] = kafka_flink_user[0]['login']
-            variables[f'{ENV_SECRETS_PREFIX}__FLINK__KAFKA__LOGIN'] = kafka_flink_user[0]['password']
+            variables[f'{ENV_SECRETS_PREFIX}__FLINK__KAFKA__PASSWORD'] = kafka_flink_user[0]['password']
+            variables[f'{ENV_SECRETS_PREFIX}__FLINK__KAFKA__LOGIN'] = kafka_flink_user[0]['login']
 
         if self.obj['outputs']['kafka_hosts']['value']:
             variables[f'{ENV_SECRETS_PREFIX}__FLINK__KAFKA__HOSTS'] = json.dumps(self.obj['outputs']['kafka_hosts']['value'])
@@ -114,8 +114,8 @@ class Command:
         clickhouse_users = self.obj['outputs']['clickhouse_users']['value']
         clickhouse_flink_user = list(filter(lambda u: u['user'] == f'{name_prefix}-flink', clickhouse_users))
         if clickhouse_flink_user:
-            variables[f'{ENV_SECRETS_PREFIX}__FLINK__CLICKHOUSE__PASSWORD'] = clickhouse_flink_user[0]['user']
-            variables[f'{ENV_SECRETS_PREFIX}__FLINK__CLICKHOUSE__LOGIN'] = clickhouse_flink_user[0]['password']
+            variables[f'{ENV_SECRETS_PREFIX}__FLINK__CLICKHOUSE__PASSWORD'] = clickhouse_flink_user[0]['password']
+            variables[f'{ENV_SECRETS_PREFIX}__FLINK__CLICKHOUSE__LOGIN'] = clickhouse_flink_user[0]['user']
 
         if self.obj['outputs'].get('clickhouse_hosts', {}):
             variables[f'{ENV_SECRETS_PREFIX}__FLINK__CLICKHOUSE__HOSTS'] = json.dumps(self.obj['outputs']['clickhouse_hosts']['value'][0])

@@ -30,14 +30,3 @@ RUN pip3 install kafka-python clickhouse-driver apache-flink==1.18.0
 
 RUN keytool -importcert -alias YandexCA --file ${KAFKA_SSL_CAFILE} --keystore /opt/flink/ssl --storepass gdpgdp --noprompt
 RUN chmod 777 ssl
-
-RUN keytool -importkeystore \
- -srckeystore /opt/flink/ssl \
- -srcstoretype PKCS12 \
- -srcstorepass gdpgdp \
- -destkeystore /opt/flink/ssl.jks \
- -deststoretype jks \
- -deststorepass gdpgdp
-
-RUN openssl x509 -in /usr/local/share/ca-certificates/Yandex/YandexInternalRootCA.crt -out /usr/local/share/ca-certificates/Yandex/YandexInternalRootCA.pem -outform PEM
-
