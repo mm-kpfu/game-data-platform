@@ -45,7 +45,7 @@ ingress-nginx:
   fullnameOverride: ingress-nginx
   controller:
     service:
-      loadBalancerIP: "158.160.134.182"
+      loadBalancerIP: "158.160.170.216"
     ingressClassResource:
       default: true
     tolerations:
